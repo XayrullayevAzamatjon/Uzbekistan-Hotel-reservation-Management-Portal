@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="WelcomePage">
+    <property name="can_focus">False</property>
+    <property name="default_width">1000</property>
+    <property name="default_height">800</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Welcome</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold 33"/>
+              <attribute name="foreground" value="#3fff6f90bfff"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">259</property>
+            <property name="y">205</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Uzbekistan Hotel Reservation and Management Portal</property>
+            <property name="width_chars">43</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Italic 17"/>
+              <attribute name="foreground" value="#3fff6f90bfff"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">53</property>
+            <property name="y">274</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="welcome_register">
+            <property name="label" translatable="yes">Register</property>
+            <property name="width_request">322</property>
+            <property name="height_request">60</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="welcome_register_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">210</property>
+            <property name="y">405</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="welcome_login">
+            <property name="label" translatable="yes">Login</property>
+            <property name="width_request">322</property>
+            <property name="height_request">60</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="events">GDK_BUTTON2_MOTION_MASK | GDK_STRUCTURE_MASK</property>
+            <signal name="clicked" handler="welcome_login_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">210</property>
+            <property name="y">505</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">images/welcome.jpg</property>
+          </object>
+          <packing>
+            <property name="x">681</property>
+            <property name="y">-5</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

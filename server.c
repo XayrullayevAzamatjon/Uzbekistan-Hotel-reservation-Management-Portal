@@ -1,0 +1,219 @@
+#include <mysql/mysql.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+
+#define PORT 4463
+void *handle_connection(void *arg);
+void handle_login(const char *data, int client_fd);
+void handle_registration(const char *data);
+
+MYSQL *connect_to_DB() {
+    MYSQL *conn;
+
+    if ((conn = mysql_init(NULL)) == NULL) {
+        fprintf(stderr, "Could not init DB\n");
+        return NULL;
+    }
+
+    if (mysql_real_connect(conn, "localhost", "root", "secret", "project", 0, NULL, 0) == NULL) {
+        fprintf(stderr, "DB Connection Error\n");
+        mysql_close(conn);
+        return NULL;
+    }
+
+    return conn;
+}
+void *handle_connection(void *arg) {
+    int client_fd = *((int *)arg);
+    char buffer[1024];
+
+    struct sockaddr_in client_addr;
+    socklen_t addr_size = sizeof(client_addr);
+    getpeername(client_fd, (struct sockaddr *)&client_addr, &addr_size);
+    char client_ip[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(client_addr.sin_addr), client_ip, INET_ADDRSTRLEN);
+
+
+    while (1) {
+        memset(buffer, '\0', sizeof(buffer));
+        ssize_t received_bytes = recv(client_fd, buffer, sizeof(buffer), 0);
+
+        if (received_bytes <= 0) {
+            if (received_bytes == 0) {
+                // Client disconnected
+                printf("[DISCONNECTED] Connection closed by client [%s]\n",client_ip);
+            } else {
+                perror("Error receiving data from the client");
+            }
+            break; // Exit the loop when the client disconnects
+        }
+
+        printf("[CLIENT] %s\n", buffer);
+
+        if (strstr(buffer, "REGISTER|") != NULL) {
+            handle_registration(buffer);
+        }
+        if (strstr(buffer, "LOGIN|") != NULL) {
+            handle_login(buffer, client_fd);
+        }
+    }
+
+    close(client_fd);
+    //printf("[DISCONNECTED] Connection closed [%s]\n",client_ip);
+
+    return NULL;
+}
+
+void handle_login(const char *data, int client_fd) {
+    char username[100], password[100];
+    if (sscanf(data, "LOGIN|%99[^|]|%99[^|]", username, password) != 2) {
+        printf("LOGIN_DATA: [%s][%s]\n", username, password);
+        fprintf(stderr, "Invalid login data format: %s\n", data);
+        return;
+    }
+
+    // Print the received username and password for debugging
+    printf("Received login request with username: %s, password: %s\n", username, password);
+
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    // Prepare SQL statement
+    char query[1024];
+    snprintf(query, sizeof(query), "SELECT * FROM customers WHERE username='%s' AND password='%s'", username, password);
+
+    // Execute SQL statement
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        MYSQL_RES *result = mysql_store_result(conn);
+        int num_rows = mysql_num_rows(result);
+
+        if (num_rows > 0) {
+            char response[] = "true";
+            send(client_fd, response, strlen(response), 0);
+            printf("[LOGIN_SUCCESS] Sent 'true' response to client\n");
+        } else {
+            char response[] = "false";
+            send(client_fd, response, strlen(response), 0);
+            printf("[LOGIN_FAILURE] Sent 'false' response to client\n");
+        }
+
+        mysql_free_result(result);
+    }
+
+    // Clean up
+    mysql_close(conn);
+}
+
+
+
+void handle_registration(const char *data) {
+    long long customer_id;
+    char firstname[255], lastname[255], address[255], passport_number[255], email[255], phone_number[15],
+        username[255], password[255];
+
+    if (sscanf(data, "REGISTER|%lld|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]",
+               &customer_id, firstname, lastname, address, passport_number, email, phone_number,
+               username, password) != 9) {
+        fprintf(stderr, "Invalid registration data format: %s\n", data);
+        return;
+    }
+
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    char query[2048];
+    snprintf(query, sizeof(query),
+             "INSERT INTO customers (customerID, firstname, lastname, address, passport_number, email, phone_number, username, password) "
+             "VALUES (%lld, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+             customer_id, firstname, lastname, address, passport_number, email, phone_number, username, password);
+
+    // Execute SQL statement
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        printf("Customer data inserted into the database\n");
+    }
+
+    // Clean up
+    mysql_close(conn);
+}
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t addr_size;
+    char buffer[1024];
+
+    // Server socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (server_fd == -1) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT);
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+
+    if (listen(server_fd, 5) < 0) {
+        perror("Listen failed");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("[LISTENING] Port Number: %d\n", PORT);
+
+while (1) {
+    addr_size = sizeof(client_addr);
+    client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &addr_size);
+
+    if (client_fd == -1) {
+        perror("Accept failed");
+        continue;
+    }
+        // Convert the client's IP address from binary to a readable string
+    char client_ip[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(client_addr.sin_addr), client_ip, INET_ADDRSTRLEN);
+
+    printf("[CONNECTED] New connection from %s\n", client_ip);
+
+    pthread_t client_thread;
+    if (pthread_create(&client_thread, NULL, handle_connection, &client_fd) != 0) {
+        perror("Failed to create thread");
+        close(client_fd);
+        continue;
+    }
+
+    pthread_detach(client_thread);
+}
+
+    close(server_fd);
+
+    return 0;
+}
+
+
