@@ -22,9 +22,11 @@ GtkWindow *IncorrectPassword;
 GtkWindow *EmptyField;
 GtkBuilder *sign_up_builder;
 GtkWindow *Login;
+GtkWindow *ManagerLogin;
 GtkBuilder *login_builder;
 GtkBuilder *main_builder;
 GtkWindow *MAINPAGE;
+GtkLabel *main_page_client_id;
 GtkWindow *Hotels;
 GtkBuilder *hotels_builder;
 
@@ -53,6 +55,7 @@ typedef struct {
 
 
 int sock; // Global variable for the socket
+long long customer_id;
 long long generateUniqueID() ;
 void disconnect_from_server() ;
 HotelList receive_hotels(int sock) ;
@@ -117,9 +120,12 @@ int main(int argc, char *argv[]) {
 
     login_builder=gtk_builder_new_from_file("page_2.glade");
     Login = GTK_WINDOW(gtk_builder_get_object(login_builder, "Login"));
+    ManagerLogin=GTK_WINDOW(gtk_builder_get_object(login_builder, "ManagerLogin"));
 
     main_builder=gtk_builder_new_from_file("main_page/page_main.glade");
     MAINPAGE = GTK_WINDOW(gtk_builder_get_object(main_builder, "MAINPAGE"));
+    main_page_client_id = GTK_LABEL(gtk_builder_get_object(main_builder, "client_id"));
+
 
     hotels_builder=gtk_builder_new_from_file("hotels.glade");
     Hotels = GTK_WINDOW(gtk_builder_get_object(hotels_builder, "Hotels"));
@@ -137,6 +143,7 @@ int main(int argc, char *argv[]) {
     gtk_builder_connect_signals(sign_up_builder, NULL);
 
     g_signal_connect(Login, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(ManagerLogin, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(login_builder, NULL);
 
     g_signal_connect(MAINPAGE, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -263,10 +270,47 @@ void manager_register_button_clicked_cb(){
         g_print("DATA: %s\n", data);
         send_to_server(data);
         gtk_widget_hide(GTK_WIDGET(ManagerRegistration));
-        gtk_widget_show(GTK_WIDGET(Login));
+        gtk_widget_show(GTK_WIDGET(ManagerLogin));
     }
      
 
+}
+void manager_login_button_clicked_cb(){
+    GtkEntry *username_entry, *password_entry;
+    username_entry = GTK_ENTRY(gtk_builder_get_object(login_builder, "login_username1"));
+    password_entry = GTK_ENTRY(gtk_builder_get_object(login_builder, "login_password1"));
+    const gchar *username = gtk_entry_get_text(username_entry);
+    const gchar *password = gtk_entry_get_text(password_entry);
+    char data[1024]; 
+
+    snprintf(data, sizeof(data), "MANAGER_LOGIN|%s|%s", username, password);
+
+    send_to_server(data);
+
+    char response[1024];
+    ssize_t received_bytes = recv(sock, response, sizeof(response), 0);
+
+    if (received_bytes > 0) {
+        response[received_bytes] = '\0'; // Null-terminate the received data
+        printf("RESPONSE: [%s]\n", response);
+
+        // Check the response and take appropriate action
+        if (strcmp(response, "true") == 0) {
+            printf("Login successful. Display main page.\n");
+            // Add code to display the main page
+            gtk_widget_hide(GTK_WIDGET(ManagerLogin));
+            gtk_widget_show(GTK_WIDGET(MAINPAGE));
+        } else {
+            printf("Login failed. Display error popup.\n");
+            // Add code to display an error popup
+        }
+    } else if (received_bytes == 0) {
+        printf("Connection closed by the server.\n");
+        // Add code to handle the case where the server closes the connection
+    } else {
+        perror("Error receiving data from the server");
+        // Add error handling code as needed
+    }
 }
 
 void register_button_clicked_cb(){
@@ -304,7 +348,7 @@ void register_button_clicked_cb(){
     if (strcmp(password, confirm_password) != 0) {
         gtk_widget_show(GTK_WIDGET(IncorrectPassword));
     } else {
-        long long customer_id=generateUniqueID();
+        customer_id=generateUniqueID();
         char data[1024]; 
         snprintf(data, sizeof(data), "CLIENT_REGISTER|%lld|%s|%s|%s|%s|%s|%s|%s|%s", customer_id,
              firstname, lastname, address, passport_number, email, phone_number, username, password);    
@@ -315,15 +359,15 @@ void register_button_clicked_cb(){
     }
 }
 
-void login_submit_clicked_cb(){
+void login_submit_clicked_cb() {
     GtkEntry *username_entry, *password_entry;
     username_entry = GTK_ENTRY(gtk_builder_get_object(login_builder, "login_username"));
     password_entry = GTK_ENTRY(gtk_builder_get_object(login_builder, "login_password"));
     const gchar *username = gtk_entry_get_text(username_entry);
     const gchar *password = gtk_entry_get_text(password_entry);
-    char data[1024]; 
+    char data[1024];
 
-    snprintf(data, sizeof(data), "LOGIN|%s|%s", username, password);
+    snprintf(data, sizeof(data), "CLIENT_LOGIN|%s|%s", username, password);
 
     send_to_server(data);
 
@@ -335,14 +379,27 @@ void login_submit_clicked_cb(){
         printf("RESPONSE: [%s]\n", response);
 
         // Check the response and take appropriate action
-        if (strcmp(response, "true") == 0) {
-            printf("Login successful. Display main page.\n");
-            // Add code to display the main page
-            gtk_widget_hide(GTK_WIDGET(Login));
-            gtk_widget_show(GTK_WIDGET(MAINPAGE));
+        char *token = strtok(response, "|");
+        if (token != NULL && strcmp(token, "true") == 0) {
+            // Login successful. Extract client ID from the response
+            token = strtok(NULL, "|");
+            if (token != NULL) {
+                customer_id = atoll(token);
+                const gchar *customer_id_str = g_strdup_printf("%lld", customer_id);
+
+                printf("Login successful for client ID: %lld\n", customer_id);
+                gtk_label_set_text(main_page_client_id, customer_id_str);
+
+                // Add code to display the main page
+                gtk_widget_hide(GTK_WIDGET(Login));
+                gtk_widget_show(GTK_WIDGET(MAINPAGE));
+            } else {
+                fprintf(stderr, "Invalid response format: %s\n", response);
+            }
         } else {
+
             printf("Login failed. Display error popup.\n");
-            // Add code to display an error popup
+       
         }
     } else if (received_bytes == 0) {
         printf("Connection closed by the server.\n");
@@ -351,8 +408,8 @@ void login_submit_clicked_cb(){
         perror("Error receiving data from the server");
         // Add error handling code as needed
     }
-
 }
+
 //This is for generating CustomerId
 long long generateUniqueID() {
     struct timeval currentTime;
@@ -374,6 +431,43 @@ void incorrect_password_ok_clicked_cb(){
 }
 void empty_field_ok_clicked_cb(){
     gtk_widget_hide (GTK_WIDGET(EmptyField));
+}
+void profile_clicked_cb(){
+    char message[256];
+    snprintf(message, sizeof(message), "CLIENT_INFO|%lld", customer_id);
+    send_to_server(message);
+    char buffer[1024];
+    ssize_t received_bytes = recv(sock, buffer, sizeof(buffer), 0);
+    if (received_bytes > 0) {
+        buffer[received_bytes] = '\0';
+
+        // Check if the received message is CUSTOMER_INFO
+        if (strstr(buffer, "CUSTOMER_INFO|") != NULL) {
+            // Parse and process the customer information
+            long long id;
+            char firstname[255], lastname[255], address[255], passport_number[255];
+            char email[255], phone_number[20], username[255], password[255];
+
+            // Extract customer information from the received message
+            sscanf(buffer, "CUSTOMER_INFO|%lld|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]",
+                   &id, firstname, lastname, address, passport_number,
+                   email, phone_number, username, password);
+
+            // Process the customer information (replace this with your processing logic)
+            printf("Received customer information:\n");
+            printf("ID: %lld\n", id);
+            printf("Name: %s %s\n", firstname, lastname);
+            printf("Address: %s\n", address);
+            printf("Passport Number: %s\n", passport_number);
+            printf("Email: %s\n", email);
+            printf("Phone Number: %s\n", phone_number);
+            printf("Username: %s\n", username);
+            printf("Password: %s\n", password);
+        }
+    }
+    else{
+        printf("Error is occured while receiving data CUSTOMER INFO from server!");
+    }
 }
 
 void buxara_btn_clicked_cb(){

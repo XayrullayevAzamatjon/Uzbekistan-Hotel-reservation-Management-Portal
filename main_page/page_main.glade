@@ -495,6 +495,42 @@
                         <property name="y">1295</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="profile">
+                        <property name="width_request">50</property>
+                        <property name="height_request">50</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="clicked" handler="profile_clicked_cb" swapped="no"/>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">profile.jpg</property>
+                            <property name="icon_size">0</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">815</property>
+                        <property name="y">15</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="client_id">
+                        <property name="width_request">100</property>
+                        <property name="height_request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Client ID</property>
+                      </object>
+                      <packing>
+                        <property name="x">751</property>
+                        <property name="y">238</property>
+                      </packing>
+                    </child>
                   </object>
                 </child>
               </object>

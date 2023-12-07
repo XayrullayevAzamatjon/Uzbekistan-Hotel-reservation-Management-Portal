@@ -260,6 +260,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="tashkent_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">50</property>
@@ -275,6 +276,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="namangan_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">265</property>
@@ -290,6 +292,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="fergana_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">475</property>
@@ -305,6 +308,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="samarkand_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">685</property>
@@ -376,6 +380,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="jizzax_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">50</property>
@@ -391,6 +396,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="surxan_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">265</property>
@@ -406,6 +412,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="kashkadarya_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">475</property>
@@ -421,6 +428,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="khorezm_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">685</property>
@@ -464,6 +472,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="buxara_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">175</property>
@@ -479,10 +488,34 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="karakalpak_btn_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">600</property>
                         <property name="y">1295</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="profile">
+                        <property name="width_request">50</property>
+                        <property name="height_request">50</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="always_show_image">True</property>
+                        <signal name="clicked" handler="profile_clicked_cb" swapped="no"/>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">profile.jpg</property>
+                            <property name="icon_size">0</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">815</property>
+                        <property name="y">15</property>
                       </packing>
                     </child>
                   </object>
