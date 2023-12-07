@@ -12,7 +12,108 @@
 #define PORT 4463
 void *handle_connection(void *arg);
 void handle_login(const char *data, int client_fd);
-void handle_registration(const char *data);
+void handle_client_registration(const char *data);
+void handle_manager_registration(const char *data);
+MYSQL *connect_to_DB() ;
+typedef struct {
+    long long id;
+    char name[255];
+} HotelName;
+
+void send_hotel_names(int client_fd) {
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    const char *query = "SELECT hotelID, name FROM hotels";
+    
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        MYSQL_RES *result = mysql_store_result(conn);
+
+        if (result != NULL) {
+            int num_names = mysql_num_rows(result);
+
+            // Send the number of hotel names
+            send(client_fd, &num_names, sizeof(num_names), 0);
+
+            // Send each hotel name with ID
+            MYSQL_ROW row;
+            while ((row = mysql_fetch_row(result)) != NULL) {
+                HotelName hotelName;
+                hotelName.id = atoll(row[0]); // Convert string to long long
+                snprintf(hotelName.name, sizeof(hotelName.name), "%s", row[1]); // Copy name
+
+                send(client_fd, &hotelName, sizeof(HotelName), 0);
+            }
+
+            mysql_free_result(result);
+        }
+    }
+
+    mysql_close(conn);
+}
+typedef struct {
+    char name[255];
+    char address[255];
+    char phone[20];
+    char email[255];
+    float rating;
+    char facilities[255];
+    char picture[1000];
+} Hotel;
+
+void retrieve_hotels(int client_fd) {
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    const char *query = "SELECT * FROM hotels";
+
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+
+        MYSQL_RES *result = mysql_store_result(conn);
+
+        if (result != NULL) {
+
+            int num_rows = mysql_num_rows(result);
+
+            send(client_fd, &num_rows, sizeof(num_rows), 0);
+
+            MYSQL_ROW row;
+            while ((row = mysql_fetch_row(result)) != NULL) {
+
+                Hotel hotel;
+                snprintf(hotel.name, sizeof(hotel.name), "%s", row[1]);         // Copy name
+                snprintf(hotel.address, sizeof(hotel.address), "%s", row[2]);   // Copy address
+                snprintf(hotel.phone, sizeof(hotel.phone), "%s", row[3]);       // Copy phone
+                snprintf(hotel.email, sizeof(hotel.email), "%s", row[4]);       // Copy email
+                hotel.rating = strtof(row[5], NULL);                            // Convert and copy rating
+                snprintf(hotel.facilities, sizeof(hotel.facilities), "%s", row[6]);  // Copy facilities
+                snprintf(hotel.picture, sizeof(hotel.picture), "%s", row[7]);  // Copy picture
+
+                send(client_fd, &hotel, sizeof(Hotel), 0);
+
+            }
+
+
+            mysql_free_result(result);
+        }
+    }
+
+ 
+    mysql_close(conn);
+}
 
 MYSQL *connect_to_DB() {
     MYSQL *conn;
@@ -57,12 +158,24 @@ void *handle_connection(void *arg) {
 
         printf("[CLIENT] %s\n", buffer);
 
-        if (strstr(buffer, "REGISTER|") != NULL) {
-            handle_registration(buffer);
+        if (strstr(buffer, "CLIENT_REGISTER|") != NULL) {
+            handle_client_registration(buffer);
+        }
+        if (strstr(buffer, "MANAGER_REGISTER|") != NULL) {
+            handle_manager_registration(buffer);
         }
         if (strstr(buffer, "LOGIN|") != NULL) {
             handle_login(buffer, client_fd);
         }
+        if (strstr(buffer, "HOTELS") != NULL)
+        {
+            retrieve_hotels(client_fd);
+        }
+        if (strstr(buffer, "NAMES| ") != NULL)
+        {
+            send_hotel_names(client_fd);
+        }
+        
     }
 
     close(client_fd);
@@ -120,12 +233,12 @@ void handle_login(const char *data, int client_fd) {
 
 
 
-void handle_registration(const char *data) {
+void handle_client_registration(const char *data) {
     long long customer_id;
     char firstname[255], lastname[255], address[255], passport_number[255], email[255], phone_number[15],
         username[255], password[255];
 
-    if (sscanf(data, "REGISTER|%lld|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]",
+    if (sscanf(data, "CLIENT_REGISTER|%lld|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]",
                &customer_id, firstname, lastname, address, passport_number, email, phone_number,
                username, password) != 9) {
         fprintf(stderr, "Invalid registration data format: %s\n", data);
@@ -151,6 +264,42 @@ void handle_registration(const char *data) {
         fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
     } else {
         printf("Customer data inserted into the database\n");
+    }
+
+    // Clean up
+    mysql_close(conn);
+}
+void handle_manager_registration(const char *data) {
+    long long manager_id;
+    char firstname[255], lastname[255], address[255], passport_number[255], email[255], phone_number[15],
+        username[255], password[255],hotel_name[255];
+
+    if (sscanf(data, "MANAGER_REGISTER|%lld|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]",
+               &manager_id, firstname, lastname, address, passport_number, email, phone_number,
+               username, password,hotel_name) != 10) {
+        fprintf(stderr, "Invalid MANAGER registration data format: %s\n", data);
+        return;
+    }
+
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    char query[4096];
+    snprintf(query, sizeof(query),
+             "INSERT INTO managers (managerID, firstname, lastname, address, passport_number, email, phone_number, username, password, hotel_name) "
+             "VALUES (%lld, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+             manager_id, firstname, lastname, address, passport_number, email, phone_number, username, password,hotel_name);
+
+    // Execute SQL statement
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        printf("MANAGER data inserted into the database\n");
     }
 
     // Clean up

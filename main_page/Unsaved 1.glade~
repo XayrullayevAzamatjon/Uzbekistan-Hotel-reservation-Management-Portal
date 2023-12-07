@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.40.0 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkWindow" id="main_page">
+    <property name="name">main</property>
+    <property name="can-focus">False</property>
+    <property name="default-width">1300</property>
+    <property name="default-height">800</property>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="shadow-type">in</property>
+        <property name="min-content-width">0</property>
+        <property name="min-content-height">0</property>
+        <child>
+          <object class="GtkViewport">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="shadow-type">etched-out</property>
+            <child>
+              <object class="GtkAspectFrame">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label-xalign">0</property>
+                <property name="shadow-type">none</property>
+                <child>
+                  <object class="GtkFixed">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">450</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="can-default">True</property>
+                        <property name="has-default">True</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="hexpand">False</property>
+                        <property name="vexpand">False</property>
+                        <property name="xpad">0</property>
+                        <property name="ypad">0</property>
+                        <property name="label" translatable="yes">WELCOME TO UZBEKISTAN</property>
+                        <property name="wrap">True</property>
+                        <property name="wrap-mode">char</property>
+                        <property name="width-chars">0</property>
+                        <property name="max-width-chars">0</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 10"/>
+                          <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+                          <attribute name="size" value="22528"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">220</property>
+                        <property name="y">18</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="width-request">450</property>
+                        <property name="height-request">300</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">uzb.jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">230</property>
+                        <property name="y">100</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="registan_img_label">
+                        <property name="name">registan</property>
+                        <property name="width-request">250</property>
+                        <property name="height-request">150</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="has-default">True</property>
+                        <property name="pixbuf">registan (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">500</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="zamin_img_label">
+                        <property name="name">zamin</property>
+                        <property name="width-request">250</property>
+                        <property name="height-request">150</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">Zaamin-national-park-uzbekistan (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">350</property>
+                        <property name="y">500</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="ark_img_label">
+                        <property name="name">ark</property>
+                        <property name="width-request">250</property>
+                        <property name="height-request">150</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">ark (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">650</property>
+                        <property name="y">500</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">REGISTAN</property>
+                        <property name="related-action"/>
+                        <property name="width-request">250</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">650</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">ZAMIN RESORT</property>
+                        <property name="width-request">250</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">350</property>
+                        <property name="y">650</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes"> HISTORICAL ARK</property>
+                        <property name="width-request">250</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">650</property>
+                        <property name="y">650</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">100</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">RECOMMENDED COSMOPOLITAN RESORTS : </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 10"/>
+                          <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+                          <attribute name="size" value="18432"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">430</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="tashkent_label">
+                        <property name="name">tashkent</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">120</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">tashkent.jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">785</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">SELECT ONE OF THE REGIONS OF UZBEKISTAN: </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 10"/>
+                          <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+                          <attribute name="size" value="18432"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">170</property>
+                        <property name="y">706</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="namangan_label">
+                        <property name="name">namangan</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">namangan (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">265</property>
+                        <property name="y">785</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="fergana_label">
+                        <property name="name">fergana</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">fergana (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">475</property>
+                        <property name="y">785</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="samarkand_label">
+                        <property name="name">samarkand</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">samarkand (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">685</property>
+                        <property name="y">785</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="tashkent_btn">
+                        <property name="label" translatable="yes">TASHKENT</property>
+                        <property name="name">tashkent_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">905</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="namangan_btn">
+                        <property name="label" translatable="yes">NAMANGAN</property>
+                        <property name="name">namangan_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">265</property>
+                        <property name="y">905</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="fergana_btn">
+                        <property name="label" translatable="yes">FERGANA</property>
+                        <property name="name">fergana_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">475</property>
+                        <property name="y">905</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="samarkand_btn">
+                        <property name="label" translatable="yes">SAMARKAND</property>
+                        <property name="name">samarkand_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">685</property>
+                        <property name="y">905</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="jizzax_label">
+                        <property name="name">jizzax</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">jizzax (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">980</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="surxan_label">
+                        <property name="name">surxan</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">surhandaya (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">265</property>
+                        <property name="y">980</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="kashkadarya_label">
+                        <property name="name">kashkadarya</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">kashkadarya (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">475</property>
+                        <property name="y">980</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="khorez_label">
+                        <property name="name">khorezm</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">khorezm (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">685</property>
+                        <property name="y">980</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="jizzax_btn">
+                        <property name="label" translatable="yes">JIZZAKH</property>
+                        <property name="name">jizzax_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">1100</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="surxan_btn">
+                        <property name="label" translatable="yes">SURKHANDARYA</property>
+                        <property name="name">surxan_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">265</property>
+                        <property name="y">1100</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="kashkadarya_btn">
+                        <property name="label" translatable="yes">KASHKADARYA</property>
+                        <property name="name">kashkadarya_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">475</property>
+                        <property name="y">1100</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="khorezm_btn">
+                        <property name="label" translatable="yes">KHOREZM</property>
+                        <property name="name">khorezm_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">685</property>
+                        <property name="y">1100</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="buhara_label">
+                        <property name="name">buhara</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">bukhara (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">175</property>
+                        <property name="y">1175</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="karakalpak_label">
+                        <property name="name">karakalpak</property>
+                        <property name="width-request">100</property>
+                        <property name="height-request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="pixbuf">karakalpak (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">600</property>
+                        <property name="y">1175</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="buxara_btn">
+                        <property name="label" translatable="yes">BUKHARA</property>
+                        <property name="name">buxara_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">175</property>
+                        <property name="y">1295</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="karakalpak_btn">
+                        <property name="label" translatable="yes">KARAKALPAKISTAN</property>
+                        <property name="name">karakalpak_btn</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">600</property>
+                        <property name="y">1295</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkSizeGroup">
+    <property name="mode">both</property>
+    <widgets>
+      <widget name="main_page"/>
+    </widgets>
+  </object>
+</interface>
