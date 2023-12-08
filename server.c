@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-#define PORT 4463
+#define PORT 4462
 void *handle_connection(void *arg);
 void handle_client_login(const char *data, int client_fd);
 void handle_manager_login(const char *data, int client_fd);
@@ -17,6 +17,7 @@ void handle_client_registration(const char *data);
 void handle_manager_registration(const char *data);
 void send_customer_info_to_server(long long customer_id, int client_fd);
 MYSQL *connect_to_DB() ;
+void handle_client_update(const char *data) ;
 
 typedef struct {
     long long id;
@@ -237,6 +238,10 @@ void *handle_connection(void *arg) {
         {
             send_hotel_names(client_fd);
         }
+        if (strstr(buffer, "CLIENT_UPDATE|") != NULL)
+        {
+            handle_client_update(buffer);
+        }
         if (strstr(buffer, "CLIENT_INFO|") != NULL) {
              long long customer_id;
             if (sscanf(buffer, "CLIENT_INFO|%lld", &customer_id) == 1) {
@@ -393,6 +398,45 @@ void handle_client_registration(const char *data) {
     // Clean up
     mysql_close(conn);
 }
+
+void handle_client_update(const char *data) {
+    long long customer_id;
+    char firstname[255], lastname[255], address[255], passport_number[255], email[255], phone_number[15],
+        username[255], password[255];
+
+    if (sscanf(data, "CLIENT_UPDATE|%lld|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]",
+               &customer_id, firstname, lastname, address, passport_number, email, phone_number,
+               username, password) != 9) {
+        fprintf(stderr, "Invalid update data format: %s\n", data);
+        return;
+    }
+    printf("UPDATING!!! [%s]",data);
+
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    char query[2048];
+    snprintf(query, sizeof(query),
+             "UPDATE customers SET firstname='%s', lastname='%s', address='%s', passport_number='%s', email='%s', phone_number='%s', username='%s', password='%s' "
+             "WHERE customerID=%lld",
+             firstname, lastname, address, passport_number, email, phone_number, username, password, customer_id);
+
+    // Execute SQL statement
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        printf("Customer data updated in the database\n");
+    }
+
+    // Clean up
+    mysql_close(conn);
+}
+
 void handle_manager_registration(const char *data) {
     long long manager_id;
     char firstname[255], lastname[255], address[255], passport_number[255], email[255], phone_number[15],

@@ -10,7 +10,7 @@
 #include <sys/time.h>
 
 #define SERVER_ADDRESS "127.0.0.1"
-#define SERVER_PORT 4463
+#define SERVER_PORT 4462
 
 GtkWindow *SelectRole;
 GtkBuilder *builder;
@@ -21,6 +21,8 @@ GtkWindow *ManagerRegistration;
 GtkWindow *IncorrectPassword;
 GtkWindow *EmptyField;
 GtkBuilder *sign_up_builder;
+GtkWindow *CustomerUpdate;
+GtkBuilder *update_builder;
 GtkWindow *Login;
 GtkWindow *ManagerLogin;
 GtkBuilder *login_builder;
@@ -29,6 +31,8 @@ GtkWindow *MAINPAGE;
 GtkLabel *main_page_client_id;
 GtkWindow *Hotels;
 GtkBuilder *hotels_builder;
+GtkWindow *CustomerInfo;
+GtkBuilder *customer_info_builder;
 
 GtkComboBoxText *hotel_selector;
 
@@ -107,13 +111,13 @@ int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
     // Builder for main.glade
     builder = gtk_builder_new_from_file("main.glade");
-    SelectRole = GTK_WINDOW(gtk_builder_get_object(builder, "SelectRole"));
+    SelectRole = GTK_WINDOW(gtk_builder_get_object(builder, "SelectRole")); 
 
     welcome_builder=gtk_builder_new_from_file("page_1.glade");
     WelcomePage = GTK_WINDOW(gtk_builder_get_object(welcome_builder, "WelcomePage"));
 
     sign_up_builder=gtk_builder_new_from_file("page3.glade");
-    SignUp = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "SignUp"));
+    SignUp = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "SignUp"));    
     ManagerRegistration = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "ManagerRegistration"));
     IncorrectPassword=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "IncorrectPassword"));
     EmptyField=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "EmptyField"));
@@ -130,6 +134,12 @@ int main(int argc, char *argv[]) {
     hotels_builder=gtk_builder_new_from_file("hotels.glade");
     Hotels = GTK_WINDOW(gtk_builder_get_object(hotels_builder, "Hotels"));
 
+    customer_info_builder=gtk_builder_new_from_file("Customer_page.glade");
+    CustomerInfo = GTK_WINDOW(gtk_builder_get_object(customer_info_builder, "CustomerInfo"));
+
+    update_builder=gtk_builder_new_from_file("update/update page.glade");
+    CustomerUpdate = GTK_WINDOW(gtk_builder_get_object(update_builder, "CustomerUpdate"));
+
     g_signal_connect(SelectRole, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(builder, NULL);
 
@@ -138,6 +148,9 @@ int main(int argc, char *argv[]) {
 
     g_signal_connect(SignUp, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(sign_up_builder, NULL);
+
+    g_signal_connect(CustomerUpdate, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(update_builder, NULL);
 
     g_signal_connect(ManagerRegistration, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(sign_up_builder, NULL);
@@ -151,6 +164,9 @@ int main(int argc, char *argv[]) {
 
     g_signal_connect(Hotels, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(hotels_builder, NULL);
+
+    g_signal_connect(CustomerInfo, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(customer_info_builder, NULL);
 
 
     connect_to_server();
@@ -433,9 +449,34 @@ void empty_field_ok_clicked_cb(){
     gtk_widget_hide (GTK_WIDGET(EmptyField));
 }
 void profile_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(MAINPAGE));
+    gtk_widget_show (GTK_WIDGET(CustomerInfo));
     char message[256];
     snprintf(message, sizeof(message), "CLIENT_INFO|%lld", customer_id);
     send_to_server(message);
+    //Labels
+    GtkLabel *label_fname = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "f_name"));
+    GtkLabel *label_lname = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "l_name"));
+    GtkLabel *label_email = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "email"));
+    GtkLabel *label_address = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "address"));
+    GtkLabel *label_username = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "username"));
+    GtkLabel *label_phone_number = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "phone_number"));
+    GtkLabel *label_passport_number = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "passport_number"));
+
+    //GTK ENTRY 
+    GtkEntry *entry_firstname = GTK_ENTRY(gtk_builder_get_object(update_builder, "first_name2"));
+    GtkEntry *entry_lastname = GTK_ENTRY(gtk_builder_get_object(update_builder, "last_name2"));
+    GtkEntry *entry_address = GTK_ENTRY(gtk_builder_get_object(update_builder, "address2"));
+    GtkEntry *entry_passport_number = GTK_ENTRY(gtk_builder_get_object(update_builder, "passport_number2"));
+    GtkEntry *entry_email = GTK_ENTRY(gtk_builder_get_object(update_builder, "email2"));
+    GtkEntry *entry_phone_number = GTK_ENTRY(gtk_builder_get_object(update_builder, "phone_number2"));
+    GtkEntry *entry_username = GTK_ENTRY(gtk_builder_get_object(update_builder, "username2"));
+    GtkEntry *entry_password = GTK_ENTRY(gtk_builder_get_object(update_builder ,"password2"));
+    GtkEntry *entry_confirm_password = GTK_ENTRY(gtk_builder_get_object(update_builder, "confirm_password2"));
+
+
+
+
     char buffer[1024];
     ssize_t received_bytes = recv(sock, buffer, sizeof(buffer), 0);
     if (received_bytes > 0) {
@@ -463,11 +504,79 @@ void profile_clicked_cb(){
             printf("Phone Number: %s\n", phone_number);
             printf("Username: %s\n", username);
             printf("Password: %s\n", password);
+            // Update the UI with the received customer information
+            gtk_label_set_text(label_fname, firstname);
+            gtk_label_set_text(label_lname, lastname);
+            gtk_label_set_text(label_email, email);
+            gtk_label_set_text(label_address, address);
+            gtk_label_set_text(label_username, username);
+            gtk_label_set_text(label_phone_number, phone_number);
+            gtk_label_set_text(label_passport_number, passport_number);
+
+            //For updating customer info 
+            gtk_entry_set_text(entry_firstname, firstname);
+            gtk_entry_set_text(entry_lastname, lastname);
+            gtk_entry_set_text(entry_email, email);
+            gtk_entry_set_text(entry_address, address);
+            gtk_entry_set_text(entry_username, username);
+            gtk_entry_set_text(entry_phone_number, phone_number);
+            gtk_entry_set_text(entry_passport_number, passport_number);
+            gtk_entry_set_text(entry_password, password);
+            gtk_entry_set_text(entry_confirm_password, password);
         }
     }
     else{
         printf("Error is occured while receiving data CUSTOMER INFO from server!");
     }
+}
+void customer_edit_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(CustomerInfo));
+    gtk_widget_show (GTK_WIDGET(CustomerUpdate));
+}
+void update_button_clicked_cb(){
+    // Get the entered customer information
+    GtkEntry *entry_firstname = GTK_ENTRY(gtk_builder_get_object(update_builder, "first_name2"));
+    GtkEntry *entry_lastname = GTK_ENTRY(gtk_builder_get_object(update_builder, "last_name2"));
+    GtkEntry *entry_address = GTK_ENTRY(gtk_builder_get_object(update_builder, "address2"));
+    GtkEntry *entry_passport_number = GTK_ENTRY(gtk_builder_get_object(update_builder, "passport_number2"));
+    GtkEntry *entry_email = GTK_ENTRY(gtk_builder_get_object(update_builder, "email2"));
+    GtkEntry *entry_phone_number = GTK_ENTRY(gtk_builder_get_object(update_builder, "phone_number2"));
+    GtkEntry *entry_username = GTK_ENTRY(gtk_builder_get_object(update_builder, "username2"));
+    GtkEntry *entry_password = GTK_ENTRY(gtk_builder_get_object(update_builder ,"password2"));
+    GtkEntry *entry_confirm_password = GTK_ENTRY(gtk_builder_get_object(update_builder, "confirm_password2"));
+
+    const gchar *firstname = gtk_entry_get_text(entry_firstname);
+    const gchar *lastname = gtk_entry_get_text(entry_lastname);
+    const gchar *address = gtk_entry_get_text(entry_address);
+    const gchar *passport_number = gtk_entry_get_text(entry_passport_number);
+    const gchar *email = gtk_entry_get_text(entry_email);
+    const gchar *phone_number = gtk_entry_get_text(entry_phone_number);
+    const gchar *username = gtk_entry_get_text(entry_username);
+    const gchar *password = gtk_entry_get_text(entry_password);
+    const gchar *confirm_password = gtk_entry_get_text(entry_confirm_password);
+
+    if (strlen(firstname) == 0 || strlen(lastname) == 0 || strlen(address) == 0 ||
+        strlen(passport_number) == 0 || strlen(email) == 0 || strlen(phone_number) == 0 ||
+        strlen(username) == 0 || strlen(password) == 0 || strlen(confirm_password) == 0) {
+        gtk_widget_show(GTK_WIDGET(EmptyField));
+        g_print("Please fill in all required fields\n");
+        return;
+    }
+     
+    if (strcmp(password, confirm_password) != 0) {
+        gtk_widget_show(GTK_WIDGET(IncorrectPassword));
+    }
+    else {
+        
+        char data[1024]; 
+        snprintf(data, sizeof(data), "CLIENT_UPDATE|%lld|%s|%s|%s|%s|%s|%s|%s|%s", customer_id,
+             firstname, lastname, address, passport_number, email, phone_number, username, password);    
+        g_print("DATA: %s\n", data);
+        send_to_server(data);
+        gtk_widget_hide(GTK_WIDGET(CustomerUpdate));
+        gtk_widget_show(GTK_WIDGET(MAINPAGE));
+    }
+
 }
 
 void buxara_btn_clicked_cb(){
