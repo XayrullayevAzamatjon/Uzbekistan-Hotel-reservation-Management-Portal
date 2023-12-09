@@ -26,8 +26,8 @@
             </attributes>
           </object>
           <packing>
-            <property name="x">259</property>
-            <property name="y">205</property>
+            <property name="x">227</property>
+            <property name="y">199</property>
           </packing>
         </child>
         <child>
@@ -44,7 +44,7 @@
             </attributes>
           </object>
           <packing>
-            <property name="x">53</property>
+            <property name="x">35</property>
             <property name="y">274</property>
           </packing>
         </child>
@@ -59,7 +59,7 @@
             <signal name="clicked" handler="welcome_register_clicked_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="x">210</property>
+            <property name="x">186</property>
             <property name="y">405</property>
           </packing>
         </child>
@@ -75,8 +75,8 @@
             <signal name="clicked" handler="welcome_login_clicked_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="x">210</property>
-            <property name="y">505</property>
+            <property name="x">186</property>
+            <property name="y">499</property>
           </packing>
         </child>
         <child>
@@ -90,6 +90,21 @@
           <packing>
             <property name="x">681</property>
             <property name="y">-5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="welcome_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="welcome_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
           </packing>
         </child>
       </object>

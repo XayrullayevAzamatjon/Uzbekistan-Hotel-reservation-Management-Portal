@@ -31,6 +31,10 @@ GtkWindow *MAINPAGE;
 GtkLabel *main_page_client_id;
 GtkWindow *Hotels;
 GtkBuilder *hotels_builder;
+GtkWindow *ManagerRegister;
+GtkBuilder *manager_register_builder;
+GtkWindow *AdminLogIn;
+GtkBuilder *admin_log_in_builder;
 GtkWindow *CustomerInfo;
 GtkBuilder *customer_info_builder;
 GtkWidget *main_window;
@@ -109,8 +113,6 @@ void send_to_server(const char *data) {
     }
 }
 
-
-
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
     // Builder for main.glade
@@ -123,6 +125,10 @@ int main(int argc, char *argv[]) {
     sign_up_builder=gtk_builder_new_from_file("page3.glade");
     SignUp = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "SignUp"));    
     ManagerRegistration = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "ManagerRegistration"));
+   
+    admin_log_in_builder=gtk_builder_new_from_file("Admin_log_in_practice.glade");
+    AdminLogIn=GTK_WINDOW(gtk_builder_get_object(admin_log_in_builder,
+    "admin_log_in"));   
     IncorrectPassword=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "IncorrectPassword"));
     EmptyField=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "EmptyField"));
 
@@ -195,9 +201,44 @@ void customer_button_clicked_cb (){
  	gtk_widget_show (GTK_WIDGET(WelcomePage));
 }
 
+void welcome_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(WelcomePage));
+ 	gtk_widget_show (GTK_WIDGET(SelectRole));
+}
+
+void log_in_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(Login));
+ 	gtk_widget_show (GTK_WIDGET(WelcomePage));
+}
+
+void manager_log_in_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(ManagerLogin));
+ 	gtk_widget_show (GTK_WIDGET(WelcomePage));
+}
+
+void sign_up_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(SignUp));
+ 	gtk_widget_show (GTK_WIDGET(WelcomePage));
+}
+
+void manager_reg_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(ManagerRegistration));
+ 	gtk_widget_show (GTK_WIDGET(SelectRole));
+}
+
+void profile_update_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(CustomerUpdate));
+ 	gtk_widget_show (GTK_WIDGET(CustomerInfo));
+}
+
+void customer_info_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(CustomerInfo));
+ 	gtk_widget_show (GTK_WIDGET(MAINPAGE));
+}
 
 void admin_button_clicked_cb(){
-    
+            gtk_widget_hide (GTK_WIDGET(SelectRole));
+ 	gtk_widget_show (GTK_WIDGET(AdminLogIn));
 }
 
 //This is page_1.glade buttons
@@ -477,10 +518,7 @@ void profile_clicked_cb(){
     GtkEntry *entry_username = GTK_ENTRY(gtk_builder_get_object(update_builder, "username2"));
     GtkEntry *entry_password = GTK_ENTRY(gtk_builder_get_object(update_builder ,"password2"));
     GtkEntry *entry_confirm_password = GTK_ENTRY(gtk_builder_get_object(update_builder, "confirm_password2"));
-
-
-
-
+    
     char buffer[1024];
     ssize_t received_bytes = recv(sock, buffer, sizeof(buffer), 0);
     if (received_bytes > 0) {
@@ -538,6 +576,15 @@ void customer_edit_clicked_cb(){
     gtk_widget_show (GTK_WIDGET(CustomerUpdate));
 }
 void update_button_clicked_cb(){
+
+    GtkLabel *label_fname = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "f_name"));
+    GtkLabel *label_lname = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "l_name"));
+    GtkLabel *label_email = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "email"));
+    GtkLabel *label_address = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "address"));
+    GtkLabel *label_username = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "username"));
+    GtkLabel *label_phone_number = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "phone_number"));
+    GtkLabel *label_passport_number = GTK_LABEL(gtk_builder_get_object(customer_info_builder, "passport_number"));
+
     // Get the entered customer information
     GtkEntry *entry_firstname = GTK_ENTRY(gtk_builder_get_object(update_builder, "first_name2"));
     GtkEntry *entry_lastname = GTK_ENTRY(gtk_builder_get_object(update_builder, "last_name2"));
@@ -578,16 +625,21 @@ void update_button_clicked_cb(){
         g_print("DATA: %s\n", data);
         send_to_server(data);
         gtk_widget_hide(GTK_WIDGET(CustomerUpdate));
-        gtk_widget_show(GTK_WIDGET(MAINPAGE));
+        gtk_label_set_text(label_fname, firstname);
+        gtk_label_set_text(label_lname, lastname);
+        gtk_label_set_text(label_email, email);
+        gtk_label_set_text(label_address, address);
+        gtk_label_set_text(label_username, username);
+        gtk_label_set_text(label_phone_number, phone_number);
+        gtk_label_set_text(label_passport_number, passport_number);
+        gtk_widget_show(GTK_WIDGET(CustomerInfo));
     }
-
 }
 
 void buxara_btn_clicked_cb(){  
     send_to_server("HOTELS ");
     HotelList all_hotels=receive_hotels(sock);  
-    setup_hotel_interface(&all_hotels);
-    
+    setup_hotel_interface(&all_hotels);    
 }
 
 HotelList receive_hotels(int sock) {

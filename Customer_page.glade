@@ -350,6 +350,21 @@
                 <property name="y">211</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="customer_info_back">
+                <property name="label">gtk-go-back</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="customer_info_back_clicked_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="x">20</property>
+                <property name="y">20</property>
+              </packing>
+            </child>
           </object>
         </child>
       </object>
