@@ -33,6 +33,7 @@ GtkWindow *Hotels;
 GtkBuilder *hotels_builder;
 GtkWindow *CustomerInfo;
 GtkBuilder *customer_info_builder;
+GtkWidget *main_window;
 
 GtkComboBoxText *hotel_selector;
 
@@ -64,6 +65,9 @@ long long generateUniqueID() ;
 void disconnect_from_server() ;
 HotelList receive_hotels(int sock) ;
 void receive_hotel_names(int sock, GtkComboBoxText *hotel_selector);
+void destroy(GtkWidget *widget, gpointer data);
+void on_book_button_clicked(GtkButton *button, gpointer data);
+void setup_hotel_interface(HotelList *hotel_list);
 
 
 void connect_to_server() {
@@ -579,11 +583,10 @@ void update_button_clicked_cb(){
 
 }
 
-void buxara_btn_clicked_cb(){
-  
+void buxara_btn_clicked_cb(){  
     send_to_server("HOTELS ");
     HotelList all_hotels=receive_hotels(sock);  
-    //create_hotel_frames(all_hotels);
+    setup_hotel_interface(&all_hotels);
     
 }
 
@@ -620,4 +623,84 @@ HotelList receive_hotels(int sock) {
 // Function to free the memory allocated for a HotelList
 void freeHotelList(HotelList *hotelList) {
     free(hotelList->hotels);
+}
+
+void setup_hotel_interface(HotelList *hotel_list) {
+    // Create the main window
+    main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(main_window), "Hotel Details");
+    gtk_window_set_default_size(GTK_WINDOW(main_window), 800, 600);
+
+    // Create a scrolled window
+    GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
+                                   GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+    // Create a vertical box to hold the hotel details
+    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_container_add(GTK_CONTAINER(scrolled_window), vbox);
+
+    // Create GTK widgets for each hotel
+    for (int i = 0; i < hotel_list->num_hotels; i++) {
+        GtkWidget *hotel_container = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+        GtkWidget *image = gtk_image_new_from_file(hotel_list->hotels[i].picture);
+        GtkWidget *details_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
+        GtkWidget *hotel_name_label = gtk_label_new(hotel_list->hotels[i].name);
+        GtkWidget *hotel_address_label = gtk_label_new(hotel_list->hotels[i].address);
+        GtkWidget *hotel_rating_label = gtk_label_new(g_strdup_printf("Rating: %.2f", hotel_list->hotels[i].rating));
+
+
+
+        GtkWidget *book_button = gtk_button_new_with_label("Book");
+        g_signal_connect(book_button, "clicked", G_CALLBACK(on_book_button_clicked), &(hotel_list->hotels[i]));
+
+        // Apply CSS styling to create rounded borders, padding, and box shadow
+        const gchar *css_data = ".hotel-container { border-radius: 10px; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }";
+        GtkCssProvider *cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_data(cssProvider, css_data, -1, NULL);
+
+        // Apply CSS styling to the hotel container
+        GtkStyleContext *styleContext = gtk_widget_get_style_context(hotel_container);
+        gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+
+        // Pack labels and button into the details_vbox
+        gtk_box_pack_start(GTK_BOX(details_vbox), hotel_name_label, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(details_vbox), hotel_address_label, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(details_vbox), hotel_rating_label, FALSE, FALSE, 0);
+       // gtk_box_pack_start(GTK_BOX(details_vbox), hotel_facilities_view, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(details_vbox), book_button, FALSE, FALSE, 0);
+
+        // Set the horizontal alignment for each label to left-aligned
+        gtk_label_set_xalign(GTK_LABEL(hotel_name_label), 0.0);
+        gtk_label_set_xalign(GTK_LABEL(hotel_address_label), 0.0);
+        gtk_label_set_xalign(GTK_LABEL(hotel_rating_label), 0.0);
+
+        // Pack the hotel_container into the main vbox
+        gtk_box_pack_start(GTK_BOX(hotel_container), image, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(hotel_container), details_vbox, TRUE, TRUE, 0);
+
+        gtk_box_pack_start(GTK_BOX(vbox), hotel_container, FALSE, FALSE, 0);
+    }
+
+    // Connect the destroy signal
+    g_signal_connect(main_window, "destroy", G_CALLBACK(destroy), NULL);
+
+    // Pack the scrolled window into the main window
+    gtk_container_add(GTK_CONTAINER(main_window), scrolled_window);
+
+    // Show all widgets and start the main loop
+    gtk_widget_show_all(main_window);
+    gtk_main();
+}
+
+void on_book_button_clicked(GtkButton *button, gpointer data) {
+    Hotel *hotel = (Hotel *)data;
+    g_print("Book button clicked for hotel: %s\n", hotel->name);
+    gtk_widget_hide(GTK_WIDGET(main_window));
+    gtk_widget_show(GTK_WIDGET(SignUp));
+    
+}
+void destroy(GtkWidget *widget, gpointer data) {
+    gtk_main_quit();
 }
