@@ -2,6 +2,105 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="AdminLogin">
+    <property name="can_focus">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkEntry" id="login_username2">
+            <property name="width_request">340</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Username: </property>
+          </object>
+          <packing>
+            <property name="x">650</property>
+            <property name="y">220</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="login_password2">
+            <property name="width_request">340</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="placeholder_text" translatable="yes">Password</property>
+          </object>
+          <packing>
+            <property name="x">650</property>
+            <property name="y">369</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">307</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Login</property>
+            <attributes>
+              <attribute name="font-desc" value="Abyssinica SIL Bold 58"/>
+              <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">435</property>
+            <property name="y">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">images/manager_login.jpg</property>
+          </object>
+          <packing>
+            <property name="x">27</property>
+            <property name="y">117</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="admin_login_button">
+            <property name="label" translatable="yes">LOG IN</property>
+            <property name="width_request">111</property>
+            <property name="height_request">63</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="admin_login_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">750</property>
+            <property name="y">495</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="admin_log_in_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="admin_log_in_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="Login">
     <property name="width_request">1300</property>
     <property name="height_request">800</property>
@@ -12,107 +111,95 @@
       <placeholder/>
     </child>
     <child>
-      <object class="GtkAspectFrame">
+      <object class="GtkFixed">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="halign">center</property>
-        <property name="valign">start</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
         <child>
-          <object class="GtkFixed">
-            <property name="width_request">1800</property>
-            <property name="height_request">800</property>
+          <object class="GtkEntry" id="login_username">
+            <property name="width_request">340</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Username: </property>
+          </object>
+          <packing>
+            <property name="x">650</property>
+            <property name="y">220</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="login_password">
+            <property name="width_request">340</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="placeholder_text" translatable="yes">Password</property>
+          </object>
+          <packing>
+            <property name="x">650</property>
+            <property name="y">369</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">307</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkEntry" id="login_username">
-                <property name="width_request">340</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Username: </property>
-              </object>
-              <packing>
-                <property name="x">650</property>
-                <property name="y">220</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="login_password">
-                <property name="width_request">340</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="visibility">False</property>
-                <property name="placeholder_text" translatable="yes">Password</property>
-              </object>
-              <packing>
-                <property name="x">650</property>
-                <property name="y">369</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="width_request">307</property>
-                <property name="height_request">40</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Login</property>
-                <attributes>
-                  <attribute name="font-desc" value="Abyssinica SIL Bold 58"/>
-                  <attribute name="foreground" value="#1a1a5f5fb4b4"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="x">435</property>
-                <property name="y">7</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">images/login.jpg</property>
-              </object>
-              <packing>
-                <property name="x">22</property>
-                <property name="y">152</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="login_submit">
-                <property name="label" translatable="yes">LOG IN</property>
-                <property name="width_request">111</property>
-                <property name="height_request">63</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="login_submit_clicked_cb" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">750</property>
-                <property name="y">495</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="log_in_back">
-                <property name="label">gtk-go-back</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="log_in_back_clicked_cb" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">20</property>
-                <property name="y">20</property>
-              </packing>
-            </child>
+            <property name="label" translatable="yes">Login</property>
+            <attributes>
+              <attribute name="font-desc" value="Abyssinica SIL Bold 58"/>
+              <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+            </attributes>
           </object>
+          <packing>
+            <property name="x">435</property>
+            <property name="y">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">images/login.jpg</property>
+          </object>
+          <packing>
+            <property name="x">22</property>
+            <property name="y">152</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="login_submit">
+            <property name="label" translatable="yes">LOG IN</property>
+            <property name="width_request">111</property>
+            <property name="height_request">63</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="login_submit_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">750</property>
+            <property name="y">495</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="log_in_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="log_in_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
         </child>
       </object>
     </child>
@@ -125,103 +212,95 @@
       <placeholder/>
     </child>
     <child>
-      <object class="GtkAspectFrame">
+      <object class="GtkFixed">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
         <child>
-          <object class="GtkFixed">
+          <object class="GtkEntry" id="login_username1">
+            <property name="width_request">340</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Username: </property>
+          </object>
+          <packing>
+            <property name="x">650</property>
+            <property name="y">220</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="login_password1">
+            <property name="width_request">340</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="placeholder_text" translatable="yes">Password</property>
+          </object>
+          <packing>
+            <property name="x">650</property>
+            <property name="y">369</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">307</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkEntry" id="login_username1">
-                <property name="width_request">340</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Username: </property>
-              </object>
-              <packing>
-                <property name="x">650</property>
-                <property name="y">220</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="login_password1">
-                <property name="width_request">340</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="visibility">False</property>
-                <property name="placeholder_text" translatable="yes">Password</property>
-              </object>
-              <packing>
-                <property name="x">650</property>
-                <property name="y">369</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="width_request">307</property>
-                <property name="height_request">40</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Login</property>
-                <attributes>
-                  <attribute name="font-desc" value="Abyssinica SIL Bold 58"/>
-                  <attribute name="foreground" value="#1a1a5f5fb4b4"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="x">435</property>
-                <property name="y">7</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">images/manager_login.jpg</property>
-              </object>
-              <packing>
-                <property name="x">27</property>
-                <property name="y">117</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="manager_login_button">
-                <property name="label" translatable="yes">LOG IN</property>
-                <property name="width_request">111</property>
-                <property name="height_request">63</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="manager_login_button_clicked_cb" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">750</property>
-                <property name="y">495</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="manager_log_in_back">
-                <property name="label">gtk-go-back</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="manager_log_in_back_clicked_cb" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">20</property>
-                <property name="y">20</property>
-              </packing>
-            </child>
+            <property name="label" translatable="yes">Login</property>
+            <attributes>
+              <attribute name="font-desc" value="Abyssinica SIL Bold 58"/>
+              <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+            </attributes>
           </object>
+          <packing>
+            <property name="x">435</property>
+            <property name="y">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">images/manager_login.jpg</property>
+          </object>
+          <packing>
+            <property name="x">27</property>
+            <property name="y">117</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_login_button">
+            <property name="label" translatable="yes">LOG IN</property>
+            <property name="width_request">111</property>
+            <property name="height_request">63</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="manager_login_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">750</property>
+            <property name="y">495</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_log_in_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="manager_log_in_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
         </child>
       </object>
     </child>

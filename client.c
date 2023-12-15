@@ -12,32 +12,46 @@
 #define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_PORT 4462
 
-GtkWindow *SelectRole;
 GtkBuilder *builder;
+GtkWindow *SelectRole;
+
 GtkBuilder *welcome_builder;
 GtkWindow *WelcomePage;
+GtkWindow *ManagerWelcome;
+
+GtkBuilder *sign_up_builder;
 GtkWindow *SignUp;
 GtkWindow *ManagerRegistration;
 GtkWindow *IncorrectPassword;
 GtkWindow *EmptyField;
-GtkBuilder *sign_up_builder;
-GtkWindow *CustomerUpdate;
-GtkBuilder *update_builder;
+
+GtkBuilder *manager_register_builder;
+GtkWindow *ManagerRegister;
+
+GtkBuilder *login_builder;
 GtkWindow *Login;
 GtkWindow *ManagerLogin;
-GtkBuilder *login_builder;
+GtkWindow *AdminLogin;
+
 GtkBuilder *main_builder;
 GtkWindow *MAINPAGE;
 GtkLabel *main_page_client_id;
-GtkWindow *Hotels;
+
 GtkBuilder *hotels_builder;
-GtkWindow *ManagerRegister;
-GtkBuilder *manager_register_builder;
-GtkWindow *AdminLogIn;
-GtkBuilder *admin_log_in_builder;
+GtkWindow *Hotels;
+
+GtkBuilder *update_builder;
+GtkWindow *CustomerUpdate;
+
 GtkWindow *CustomerInfo;
 GtkBuilder *customer_info_builder;
+
+GtkWindow *AdminPage1;
+GtkBuilder *admin_page1_builder;
+
 GtkWidget *main_window;
+GtkComboBoxText *hotel_selector;
+
 GtkWindow *MoreInfo;
 GtkBuilder *more_info_builder;
 
@@ -123,25 +137,25 @@ int main(int argc, char *argv[]) {
 
     welcome_builder=gtk_builder_new_from_file("page_1.glade");
     WelcomePage = GTK_WINDOW(gtk_builder_get_object(welcome_builder, "WelcomePage"));
+    ManagerWelcome=GTK_WINDOW(gtk_builder_get_object(welcome_builder, "ManagerWelcome"));
 
     sign_up_builder=gtk_builder_new_from_file("page3.glade");
     SignUp = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "SignUp"));    
     ManagerRegistration = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "ManagerRegistration"));
-   
-    admin_log_in_builder=gtk_builder_new_from_file("Admin_log_in_practice.glade");
-    AdminLogIn=GTK_WINDOW(gtk_builder_get_object(admin_log_in_builder,
-    "admin_log_in"));   
     IncorrectPassword=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "IncorrectPassword"));
     EmptyField=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "EmptyField"));
 
+    manager_register_builder=gtk_builder_new_from_file("main_page/manager_register.glade");
+    ManagerRegister=GTK_WINDOW(gtk_builder_get_object(manager_register_builder, "ManagerRegister"));
+   
     login_builder=gtk_builder_new_from_file("page_2.glade");
     Login = GTK_WINDOW(gtk_builder_get_object(login_builder, "Login"));
     ManagerLogin=GTK_WINDOW(gtk_builder_get_object(login_builder, "ManagerLogin"));
+    AdminLogin=GTK_WINDOW(gtk_builder_get_object(login_builder, "AdminLogin"));   
 
     main_builder=gtk_builder_new_from_file("main_page/page_main.glade");
     MAINPAGE = GTK_WINDOW(gtk_builder_get_object(main_builder, "MAINPAGE"));
     main_page_client_id = GTK_LABEL(gtk_builder_get_object(main_builder, "client_id"));
-
 
     hotels_builder=gtk_builder_new_from_file("hotels.glade");
     Hotels = GTK_WINDOW(gtk_builder_get_object(hotels_builder, "Hotels"));
@@ -155,23 +169,30 @@ int main(int argc, char *argv[]) {
     more_info_builder=gtk_builder_new_from_file("more_info/hotel_info.glade");
     MoreInfo = GTK_WINDOW(gtk_builder_get_object(more_info_builder, "MoreInfo"));
 
+    admin_page1_builder=gtk_builder_new_from_file("admin/admin_page1.glade");
+    AdminPage1 = GTK_WINDOW(gtk_builder_get_object(update_builder, "AdminPage1"));
+
     g_signal_connect(SelectRole, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(builder, NULL);
 
     g_signal_connect(WelcomePage, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(welcome_builder, NULL);
 
+    g_signal_connect(ManagerWelcome, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(welcome_builder, NULL);
+
     g_signal_connect(SignUp, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(sign_up_builder, NULL);
-
-    g_signal_connect(CustomerUpdate, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    gtk_builder_connect_signals(update_builder, NULL);
 
     g_signal_connect(ManagerRegistration, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(sign_up_builder, NULL);
 
+    g_signal_connect(ManagerRegister, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(manager_register_builder, NULL);
+
     g_signal_connect(Login, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(ManagerLogin, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(AdminLogin, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(login_builder, NULL);
 
     g_signal_connect(MAINPAGE, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -183,17 +204,18 @@ int main(int argc, char *argv[]) {
     g_signal_connect(CustomerInfo, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(customer_info_builder, NULL);
 
+    g_signal_connect(CustomerUpdate, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(update_builder, NULL);
 
+    g_signal_connect(AdminPage1, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(admin_page1_builder, NULL);
     g_signal_connect(MoreInfo, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(more_info_builder, NULL);
-
 
     connect_to_server();
     gtk_widget_show(GTK_WIDGET(SelectRole));
     gtk_main();
     
-
-
     return EXIT_SUCCESS;
 }
 
@@ -202,7 +224,6 @@ void disconnect_from_server() {
     close(sock);
     printf("Disconnected from the server.\n");
 }
-
 
 //This is the buttons in Main.glade file 
 void customer_button_clicked_cb (){
@@ -220,9 +241,14 @@ void log_in_back_clicked_cb(){
  	gtk_widget_show (GTK_WIDGET(WelcomePage));
 }
 
+void manager_log_in_clicked_cb (){
+    gtk_widget_hide (GTK_WIDGET(ManagerWelcome));
+ 	gtk_widget_show (GTK_WIDGET(ManagerLogin));
+}
+
 void manager_log_in_back_clicked_cb(){
     gtk_widget_hide (GTK_WIDGET(ManagerLogin));
- 	gtk_widget_show (GTK_WIDGET(WelcomePage));
+ 	gtk_widget_show (GTK_WIDGET(ManagerWelcome));
 }
 
 void sign_up_back_clicked_cb(){
@@ -246,8 +272,23 @@ void customer_info_back_clicked_cb(){
 }
 
 void admin_button_clicked_cb(){
-            gtk_widget_hide (GTK_WIDGET(SelectRole));
- 	gtk_widget_show (GTK_WIDGET(AdminLogIn));
+    gtk_widget_hide (GTK_WIDGET(SelectRole));
+ 	gtk_widget_show (GTK_WIDGET(AdminLogin));
+}
+
+void admin_login_button_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(AdminLogin));
+ 	gtk_widget_show (GTK_WIDGET(AdminPage1));    
+}
+
+void admin_log_in_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(AdminLogin));
+ 	gtk_widget_show (GTK_WIDGET(SelectRole));
+}
+
+void manager_welcome_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(WelcomePage));
+ 	gtk_widget_show (GTK_WIDGET(SelectRole));
 }
 
 //This is page_1.glade buttons
@@ -256,6 +297,7 @@ void welcome_register_clicked_cb() {
     gtk_widget_show(GTK_WIDGET(SignUp));  
     
 }
+
 void receive_hotel_names(int sock, GtkComboBoxText *hotel_selector) {
     int num_names;
     recv(sock, &num_names, sizeof(num_names), 0);
@@ -285,20 +327,33 @@ void receive_hotel_names(int sock, GtkComboBoxText *hotel_selector) {
         
 
 void welcome_login_clicked_cb(){
-
-    gtk_widget_hide (GTK_WIDGET(WelcomePage));
+     gtk_widget_hide (GTK_WIDGET(WelcomePage));
  	gtk_widget_show (GTK_WIDGET(Login));
 }
 
 void manager_button_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(SelectRole));
+ 	gtk_widget_show (GTK_WIDGET(ManagerWelcome));
+}
+
+void manager_sign_up_clicked_cb(){
     send_to_server("NAMES| ");
     hotel_selector = GTK_COMBO_BOX_TEXT (gtk_builder_get_object (sign_up_builder, "hotel_selector"));
     gtk_combo_box_text_remove_all (hotel_selector);
     receive_hotel_names(sock,hotel_selector);
-    gtk_widget_hide (GTK_WIDGET(SelectRole));
- 	gtk_widget_show (GTK_WIDGET(ManagerRegistration));
+    gtk_widget_hide (GTK_WIDGET(ManagerWelcome));
+ 	gtk_widget_show (GTK_WIDGET(ManagerRegister));
 }
 
+void manager_region_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(ManagerRegister));
+ 	gtk_widget_show (GTK_WIDGET(ManagerWelcome));
+}
+ 
+void manager_sign_up_back_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(SignUp));
+ 	gtk_widget_show (GTK_WIDGET(ManagerWelcome));
+}
 
 void manager_register_button_clicked_cb(){
     GtkEntry *entry_firstname = GTK_ENTRY(gtk_builder_get_object(sign_up_builder, "first_name1"));

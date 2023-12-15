@@ -2,6 +2,112 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="ManagerWelcome">
+    <property name="can_focus">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Welcome</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold 33"/>
+              <attribute name="foreground" value="#3fff6f90bfff"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">227</property>
+            <property name="y">199</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Uzbekistan Hotel Reservation and Management Portal</property>
+            <property name="width_chars">43</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Italic 17"/>
+              <attribute name="foreground" value="#3fff6f90bfff"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">35</property>
+            <property name="y">274</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_sign_up">
+            <property name="label" translatable="yes">Register</property>
+            <property name="width_request">322</property>
+            <property name="height_request">60</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="manager_sign_up_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">186</property>
+            <property name="y">405</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_log_i">
+            <property name="label" translatable="yes">Login</property>
+            <property name="width_request">322</property>
+            <property name="height_request">60</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="events">GDK_BUTTON2_MOTION_MASK | GDK_STRUCTURE_MASK</property>
+            <signal name="clicked" handler="manager_log_in_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">186</property>
+            <property name="y">499</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">images/welcome.jpg</property>
+          </object>
+          <packing>
+            <property name="x">681</property>
+            <property name="y">-5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_welcome_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="manager_welcome_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="WelcomePage">
     <property name="can_focus">False</property>
     <property name="default_width">1000</property>
