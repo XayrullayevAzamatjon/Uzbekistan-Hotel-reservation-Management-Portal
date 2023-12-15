@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkWindow" id="MoreInfo">
+    <property name="width_request">900</property>
+    <property name="height_request">500</property>
+    <property name="can_focus">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkViewport">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkAspectFrame">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
+                <child>
+                  <object class="GtkFixed">
+                    <property name="width_request">800</property>
+                    <property name="height_request">1250</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkButton" id="back_btn">
+                        <property name="name">back_btn</property>
+                        <property name="width_request">40</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="stock">gtk-go-back</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">15</property>
+                        <property name="y">15</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">140</property>
+                        <property name="height_request">50</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">CLIENT ID : </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Serif Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">250</property>
+                        <property name="y">15</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="client_id">
+                        <property name="width_request">160</property>
+                        <property name="height_request">50</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">clientID</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Serif Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">400</property>
+                        <property name="y">15</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="width_request">50</property>
+                        <property name="height_request">50</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="stock">gtk-add</property>
+                            <property name="icon_size">5</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">770</property>
+                        <property name="y">15</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="hotel_name">
+                        <property name="width_request">300</property>
+                        <property name="height_request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">HOTEL_NAME</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 32"/>
+                          <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+                          <attribute name="size" value="24576"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">270</property>
+                        <property name="y">80</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="hotel_image1">
+                        <property name="width_request">200</property>
+                        <property name="height_request">200</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_right">1</property>
+                        <property name="stock">gtk-home</property>
+                        <property name="icon_size">5</property>
+                      </object>
+                      <packing>
+                        <property name="x">50</property>
+                        <property name="y">180</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="hotel_image2">
+                        <property name="width_request">200</property>
+                        <property name="height_request">200</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-media-pause</property>
+                        <property name="icon_size">5</property>
+                      </object>
+                      <packing>
+                        <property name="x">320</property>
+                        <property name="y">180</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="hotel_image3">
+                        <property name="width_request">200</property>
+                        <property name="height_request">200</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-media-play</property>
+                        <property name="icon_size">5</property>
+                      </object>
+                      <packing>
+                        <property name="x">590</property>
+                        <property name="y">180</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">120</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">NAME : </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">100</property>
+                        <property name="y">420</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="hotel_name1">
+                        <property name="width_request">150</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">name_hotel</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">300</property>
+                        <property name="y">420</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">120</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">ADDRESS : </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">100</property>
+                        <property name="y">460</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">120</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">RATING : </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">100</property>
+                        <property name="y">500</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="address">
+                        <property name="width_request">150</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">addre_hotel</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">300</property>
+                        <property name="y">460</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="rate">
+                        <property name="width_request">150</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">rate_hotel</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">300</property>
+                        <property name="y">500</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">120</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">PRICE RANGE : </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">100</property>
+                        <property name="y">540</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">150</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">$ 50 up to $ 1000  </property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">300</property>
+                        <property name="y">540</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">250</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">TYPES OF ROOMS</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                          <attribute name="foreground" value="#1c1c7171d8d8"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">270</property>
+                        <property name="y">600</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">200</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Single room</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 13"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">80</property>
+                        <property name="y">650</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">200</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">King room</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 13"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">320</property>
+                        <property name="y">650</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">200</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Double room</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold 13"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">580</property>
+                        <property name="y">650</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="width_request">200</property>
+                        <property name="height_request">150</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">single room (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">80</property>
+                        <property name="y">700</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="width_request">200</property>
+                        <property name="height_request">150</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">king rom (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">320</property>
+                        <property name="y">700</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="width_request">200</property>
+                        <property name="height_request">150</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">double rom (1).jpg</property>
+                      </object>
+                      <packing>
+                        <property name="x">580</property>
+                        <property name="y">700</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">250</property>
+                        <property name="height_request">40</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">HOTEL FEATURES</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Bold Italic 16"/>
+                          <attribute name="foreground" value="#1c1c7171d8d8"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">270</property>
+                        <property name="y">870</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">BOOK</property>
+                        <property name="width_request">150</property>
+                        <property name="height_request">70</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">350</property>
+                        <property name="y">1150</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="hotel_features">
+                        <property name="width_request">100</property>
+                        <property name="height_request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">label</property>
+                        <attributes>
+                          <attribute name="font-desc" value="Sans Italic 15"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="x">312</property>
+                        <property name="y">970</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

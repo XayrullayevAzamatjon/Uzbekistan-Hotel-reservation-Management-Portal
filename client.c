@@ -38,6 +38,8 @@ GtkBuilder *admin_log_in_builder;
 GtkWindow *CustomerInfo;
 GtkBuilder *customer_info_builder;
 GtkWidget *main_window;
+GtkWindow *MoreInfo;
+GtkBuilder *more_info_builder;
 
 GtkComboBoxText *hotel_selector;
 
@@ -150,6 +152,9 @@ int main(int argc, char *argv[]) {
     update_builder=gtk_builder_new_from_file("update/update page.glade");
     CustomerUpdate = GTK_WINDOW(gtk_builder_get_object(update_builder, "CustomerUpdate"));
 
+    more_info_builder=gtk_builder_new_from_file("more_info/hotel_info.glade");
+    MoreInfo = GTK_WINDOW(gtk_builder_get_object(more_info_builder, "MoreInfo"));
+
     g_signal_connect(SelectRole, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(builder, NULL);
 
@@ -177,6 +182,10 @@ int main(int argc, char *argv[]) {
 
     g_signal_connect(CustomerInfo, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(customer_info_builder, NULL);
+
+
+    g_signal_connect(MoreInfo, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(more_info_builder, NULL);
 
 
     connect_to_server();
@@ -637,9 +646,9 @@ void update_button_clicked_cb(){
 }
 
 void buxara_btn_clicked_cb(){  
-    send_to_server("HOTELS ");
+    send_to_server("HOTELS ");   
     HotelList all_hotels=receive_hotels(sock);  
-    setup_hotel_interface(&all_hotels);    
+    setup_hotel_interface(&all_hotels);       
 }
 
 HotelList receive_hotels(int sock) {
@@ -678,6 +687,8 @@ void freeHotelList(HotelList *hotelList) {
 }
 
 void setup_hotel_interface(HotelList *hotel_list) {
+
+    gtk_widget_hide(GTK_WIDGET(MAINPAGE));
     // Create the main window
     main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(main_window), "Hotel Details");
@@ -720,7 +731,6 @@ void setup_hotel_interface(HotelList *hotel_list) {
         gtk_box_pack_start(GTK_BOX(details_vbox), hotel_name_label, FALSE, FALSE, 0);
         gtk_box_pack_start(GTK_BOX(details_vbox), hotel_address_label, FALSE, FALSE, 0);
         gtk_box_pack_start(GTK_BOX(details_vbox), hotel_rating_label, FALSE, FALSE, 0);
-       // gtk_box_pack_start(GTK_BOX(details_vbox), hotel_facilities_view, TRUE, TRUE, 0);
         gtk_box_pack_start(GTK_BOX(details_vbox), book_button, FALSE, FALSE, 0);
 
         // Set the horizontal alignment for each label to left-aligned
@@ -749,8 +759,29 @@ void setup_hotel_interface(HotelList *hotel_list) {
 void on_book_button_clicked(GtkButton *button, gpointer data) {
     Hotel *hotel = (Hotel *)data;
     g_print("Book button clicked for hotel: %s\n", hotel->name);
-    gtk_widget_hide(GTK_WIDGET(main_window));
-    gtk_widget_show(GTK_WIDGET(SignUp));
+    gtk_widget_hide(GTK_WIDGET(main_window));    
+    GtkLabel *client_id = GTK_LABEL(gtk_builder_get_object(more_info_builder, "client_id"));
+    GtkLabel *hotel_name = GTK_LABEL(gtk_builder_get_object(more_info_builder, "hotel_name"));
+    GtkLabel *hotel_name1 = GTK_LABEL(gtk_builder_get_object(more_info_builder, "hotel_name1"));
+    GtkLabel *address = GTK_LABEL(gtk_builder_get_object(more_info_builder, "address"));
+    GtkLabel *rate = GTK_LABEL(gtk_builder_get_object(more_info_builder, "rate"));
+    GtkLabel *hotel_features = GTK_LABEL(gtk_builder_get_object(more_info_builder, "hotel_features"));
+    GtkImage *image1 = GTK_IMAGE(gtk_builder_get_object(more_info_builder, "hotel_image1"));
+    GtkImage *image2 = GTK_IMAGE(gtk_builder_get_object(more_info_builder, "hotel_image2"));
+    GtkImage *image3 = GTK_IMAGE(gtk_builder_get_object(more_info_builder, "hotel_image3"));
+
+    gtk_image_set_from_file(image1, hotel->picture);
+    gtk_image_set_from_file(image2, hotel->picture);
+    gtk_image_set_from_file(image3, hotel->picture);
+    const gchar *id_text = g_strdup_printf("%lld", customer_id);
+    gtk_label_set_text(client_id, id_text);
+    gtk_label_set_text(hotel_name, hotel->name);
+    gtk_label_set_text(hotel_name1, hotel->name);
+    gtk_label_set_text(address, hotel->address);
+    const gchar *rating_text = g_strdup_printf("Rating: %.2f", hotel->rating);
+    gtk_label_set_text(rate, rating_text);
+    gtk_label_set_text(hotel_features, hotel->facilities);
+    gtk_widget_show(GTK_WIDGET(MoreInfo));
     
 }
 void destroy(GtkWidget *widget, gpointer data) {

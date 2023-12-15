@@ -95,6 +95,7 @@
             <property name="receives_default">True</property>
             <property name="use_stock">True</property>
             <property name="always_show_image">True</property>
+            <signal name="clicked" handler="log_in_back_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">20</property>
