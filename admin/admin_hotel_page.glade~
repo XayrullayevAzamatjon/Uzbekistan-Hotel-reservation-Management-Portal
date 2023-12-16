@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkWindow" id="AdminPage1">
+  <object class="GtkWindow">
     <property name="can_focus">False</property>
     <property name="default_width">1300</property>
     <property name="default_height">800</property>
@@ -10,38 +10,21 @@
       <placeholder/>
     </child>
     <child>
-      <object class="GtkFixed">
+      <object class="GtkFixed" id="AdminHotel">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">center</property>
-        <property name="valign">center</property>
-        <property name="margin_bottom">242</property>
         <child>
           <object class="GtkImage">
             <property name="width_request">100</property>
             <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">hotel.jpg</property>
+            <property name="pixbuf">plus.jpg</property>
           </object>
           <packing>
             <property name="x">110</property>
-            <property name="y">129</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="admin_hotel">
-            <property name="label" translatable="yes">HOTEL</property>
-            <property name="width_request">303</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="admin_hotel_clicked_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="x">110</property>
-            <property name="y">403</property>
+            <property name="y">350</property>
           </packing>
         </child>
         <child>
@@ -50,38 +33,11 @@
             <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="x">681</property>
-            <property name="y">261</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkImage">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="pixbuf">client.jpg</property>
+            <property name="pixbuf">settings.jpg</property>
           </object>
           <packing>
             <property name="x">610</property>
-            <property name="y">129</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="admin_customer">
-            <property name="label" translatable="yes">CUSTOMER</property>
-            <property name="width_request">303</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="admin_customer_clicked_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="x">609</property>
-            <property name="y">403</property>
+            <property name="y">350</property>
           </packing>
         </child>
         <child>
@@ -90,26 +46,53 @@
             <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">MANAGER.jpg</property>
+            <property name="pixbuf">signEye.jpg</property>
           </object>
           <packing>
             <property name="x">1110</property>
-            <property name="y">129</property>
+            <property name="y">350</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="admin_manager">
-            <property name="label" translatable="yes">MANAGER</property>
-            <property name="width_request">300</property>
+          <object class="GtkButton" id="admin_add_hotel">
+            <property name="label" translatable="yes">ADD</property>
+            <property name="width_request">225</property>
             <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <signal name="clicked" handler="admin_manager_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">110</property>
+            <property name="y">565</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="admin_update_hotel">
+            <property name="label" translatable="yes">UPDATE</property>
+            <property name="width_request">225</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="x">610</property>
+            <property name="y">565</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="admin_view_hotel">
+            <property name="label" translatable="yes">VIEW</property>
+            <property name="width_request">225</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
           </object>
           <packing>
             <property name="x">1110</property>
-            <property name="y">403</property>
+            <property name="y">565</property>
           </packing>
         </child>
       </object>

@@ -10,7 +10,7 @@
 #include <sys/time.h>
 
 #define SERVER_ADDRESS "127.0.0.1"
-#define SERVER_PORT 4462
+#define SERVER_PORT 4463
 
 GtkBuilder *builder;
 GtkWindow *SelectRole;
@@ -55,7 +55,13 @@ GtkComboBoxText *hotel_selector;
 GtkWindow *MoreInfo;
 GtkBuilder *more_info_builder;
 
-GtkComboBoxText *hotel_selector;
+GtkWindow *AdminHotel;
+GtkBuilder *admin_hotel_builder;
+
+GtkWindow *AddHotel;
+GtkBuilder *add_hotel_builder;
+
+
 
 typedef struct {
     long long id;
@@ -82,6 +88,7 @@ typedef struct {
 int sock; // Global variable for the socket
 long long customer_id;
 long long manager_id;
+long long admin_id;
 long long generateUniqueID() ;
 void disconnect_from_server() ;
 HotelList receive_hotels(int sock) ;
@@ -147,10 +154,6 @@ int main(int argc, char *argv[]) {
     IncorrectPassword=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "IncorrectPassword"));
     EmptyField=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "EmptyField"));
     
-    //New_code
-
-
-
     manager_register_builder=gtk_builder_new_from_file("main_page/manager_register.glade");
     ManagerRegister=GTK_WINDOW(gtk_builder_get_object(manager_register_builder, "ManagerRegister"));
    
@@ -176,7 +179,14 @@ int main(int argc, char *argv[]) {
     MoreInfo = GTK_WINDOW(gtk_builder_get_object(more_info_builder, "MoreInfo"));
 
     admin_page1_builder=gtk_builder_new_from_file("admin/admin_page1.glade");
-    AdminPage1 = GTK_WINDOW(gtk_builder_get_object(update_builder, "AdminPage1"));
+    AdminPage1 = GTK_WINDOW(gtk_builder_get_object(admin_page1_builder, "AdminPage1"));
+
+    admin_hotel_builder=gtk_builder_new_from_file("admin/admin_hotel_page.glade");
+    AdminHotel = GTK_WINDOW(gtk_builder_get_object(admin_hotel_builder, "AdminHotel"));
+
+    add_hotel_builder=gtk_builder_new_from_file("admin/add_hotel.glade");
+    AddHotel = GTK_WINDOW(gtk_builder_get_object(add_hotel_builder, "AddHotel"));
+
 
     g_signal_connect(SelectRole, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(builder, NULL);
@@ -215,8 +225,15 @@ int main(int argc, char *argv[]) {
 
     g_signal_connect(AdminPage1, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(admin_page1_builder, NULL);
+
     g_signal_connect(MoreInfo, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(more_info_builder, NULL);
+
+    g_signal_connect(AdminHotel, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(admin_hotel_builder, NULL);
+
+    g_signal_connect(AddHotel, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_builder_connect_signals(add_hotel_builder, NULL);
 
     connect_to_server();
     gtk_widget_show(GTK_WIDGET(SelectRole));
@@ -282,10 +299,10 @@ void admin_button_clicked_cb(){
  	gtk_widget_show (GTK_WIDGET(AdminLogin));
 }
 
-void admin_login_button_clicked_cb(){
+/* void admin_login_button_clicked_cb(){
     gtk_widget_hide (GTK_WIDGET(AdminLogin));
  	gtk_widget_show (GTK_WIDGET(AdminPage1));    
-}
+} */
 
 void admin_log_in_back_clicked_cb(){
     gtk_widget_hide (GTK_WIDGET(AdminLogin));
@@ -531,6 +548,57 @@ void login_submit_clicked_cb() {
         perror("Error receiving data from the server");
         // Add error handling code as needed
     }
+}
+void admin_login_button_clicked_cb(){
+    GtkEntry *username_entry, *password_entry;
+    username_entry = GTK_ENTRY(gtk_builder_get_object(login_builder, "login_username2"));
+    password_entry = GTK_ENTRY(gtk_builder_get_object(login_builder, "login_password2"));
+    const gchar *username = gtk_entry_get_text(username_entry);
+    const gchar *password = gtk_entry_get_text(password_entry);
+    char data[1024];
+
+    snprintf(data, sizeof(data),"ADMIN_LOGIN|%s|%s", username, password);
+
+    send_to_server(data);
+
+    char response[1024];
+    ssize_t received_bytes = recv(sock, response, sizeof(response), 0);
+
+    if (received_bytes > 0) {
+        response[received_bytes] = '\0'; // Null-terminate the received data
+        printf("RESPONSE: [%s]\n", response);
+
+        // Check the response and take appropriate action
+        char *token = strtok(response, "|");
+        if (token != NULL && strcmp(token, "true") == 0) {
+            // Login successful. Extract client ID from the response
+            token = strtok(NULL, "|");
+            if (token != NULL) {
+                admin_id = atoll(token);
+                const gchar *admin_id_str = g_strdup_printf("%lld", admin_id);
+
+                printf("Login successful for Admin ID: %lld\n", admin_id);
+                gtk_label_set_text(main_page_client_id, admin_id_str);
+
+                // Add code to display the main page
+                gtk_widget_hide(GTK_WIDGET(AdminLogin));
+                gtk_widget_show(GTK_WIDGET(AdminPage1));
+            } else {
+                fprintf(stderr, "Invalid response format: %s\n", response);
+            }
+        } else {
+
+            printf("Login failed. Display error popup.\n");
+       
+        }
+    } else if (received_bytes == 0) {
+        printf("Connection closed by the server.\n");
+        // Add code to handle the case where the server closes the connection
+    } else {
+        perror("Error receiving data from the server");
+        // Add error handling code as needed
+    }
+
 }
 
 //This is for generating CustomerId
@@ -836,12 +904,9 @@ void on_book_button_clicked(GtkButton *button, gpointer data) {
 void destroy(GtkWidget *widget, gpointer data) {
     gtk_main_quit();
 }
-//Updated code here ---> New_code
+
+
 void manager_sign_up_clicked_cb(){
-/*     send_to_server("HOTELS|BUKHARA");
-    HotelList hotels=receive_hotels(sock); 
-    gtk_combo_box_text_remove_all (hotel_selector);
-    receive_hotel_names(sock,hotel_selector,&hotels); */
     gtk_widget_hide (GTK_WIDGET(ManagerWelcome));
  	gtk_widget_show (GTK_WIDGET(ManagerRegister));
 }
@@ -868,6 +933,81 @@ void set_hotels_name_to_hotel_selector(const char *region){
     hotel_selector = GTK_COMBO_BOX_TEXT (gtk_builder_get_object (sign_up_builder, "hotel_selector"));
     gtk_combo_box_text_remove_all (hotel_selector);
     receive_hotel_names(sock,hotel_selector,&hotels);
+}
+//ADMIN PAGE 
+void admin_hotel_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(AdminPage1));
+    gtk_widget_show (GTK_WIDGET(AdminHotel));
+}
+void admin_customer_clicked_cb(){
+
+}
+
+void admin_manager_clicked_cb(){
+
+}
+
+
+/// @brief Hotel page 
+void admin_add_hotel_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(AdminHotel));
+    gtk_widget_show (GTK_WIDGET(AddHotel));
+}
+
+void admin_update_hotel_clicked_cb(){
+    
+}
+void admin_view_hotel_clicked_cb(){
+
+}
+
+void add_hotel_button_clicked_cb(){
+
+    GtkEntry *entry_hotel_name = GTK_ENTRY(gtk_builder_get_object(add_hotel_builder, "hotel_name"));
+    GtkEntry *entry_address = GTK_ENTRY(gtk_builder_get_object(add_hotel_builder, "address"));
+    GtkEntry *entry_email = GTK_ENTRY(gtk_builder_get_object(add_hotel_builder, "email"));
+    GtkEntry *entry_phone = GTK_ENTRY(gtk_builder_get_object(add_hotel_builder, "phone"));
+    GtkEntry *entry_rating = GTK_ENTRY(gtk_builder_get_object(add_hotel_builder, "rating"));
+    GtkComboBoxText *region_selector = GTK_COMBO_BOX_TEXT (gtk_builder_get_object (add_hotel_builder, "region"));
+    GtkEntry *entry_facilities = GTK_ENTRY(gtk_builder_get_object(add_hotel_builder, "facilities"));
+
+    const gchar *hotel_name  = gtk_entry_get_text(entry_hotel_name);
+    const gchar *address  = gtk_entry_get_text(entry_address);
+    const gchar *email = gtk_entry_get_text(entry_email);
+    const gchar *phone = gtk_entry_get_text(entry_phone);
+    const gchar *rating = gtk_entry_get_text(entry_rating);        
+    const gchar *selected_region = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(region_selector));
+    const gchar *image = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(gtk_builder_get_object(add_hotel_builder, "image")));
+    const gchar *facilities  = gtk_entry_get_text(entry_facilities);
+    
+    // Find the last occurrence of the directory separator ("/")
+    const char *lastSlash = strrchr(image, '/');
+
+    // Extract the substring after the last slash
+    const char *filename = (lastSlash != NULL) ? lastSlash + 1 : image;
+
+    // Construct the new path in the "images" folder
+    char newImagePath[256];  // Adjust the size as needed
+    snprintf(newImagePath, sizeof(newImagePath), "images/%s", filename);
+
+    g_print("Image Path: %s\n", newImagePath);
+
+    char data_to_send[1024];  // Adjust the size as needed
+
+    snprintf(data_to_send, sizeof(data_to_send), "ADD_HOTEL|%s|%s|%s|%s|%s|%s|%s|%s", hotel_name, address, email, phone, rating, selected_region, newImagePath, facilities);
+
+    // Send the data to the server
+    send_to_server(data_to_send);
+    gtk_widget_hide (GTK_WIDGET(AddHotel));
+    gtk_widget_show (GTK_WIDGET(AdminHotel));
+}
+void cancel_hotel_button_clicked_cb(){
+    gtk_widget_hide (GTK_WIDGET(AddHotel));
+    gtk_widget_show (GTK_WIDGET(AdminHotel));
+}
+void add_hotel_back_button_clicked_cb(){
+        gtk_widget_hide (GTK_WIDGET(AddHotel));
+    gtk_widget_show (GTK_WIDGET(AdminHotel));
 }
 
 

@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-#define PORT 4462
+#define PORT 4463
 void *handle_connection(void *arg);
 void handle_client_login(const char *data, int client_fd);
 void handle_manager_login(const char *data, int client_fd);
@@ -18,6 +18,8 @@ void handle_manager_registration(const char *data);
 void send_customer_info_to_server(long long customer_id, int client_fd);
 MYSQL *connect_to_DB() ;
 void handle_client_update(const char *data) ;
+void handle_admin_login(const char *data, int client_fd);
+void handle_add_hotel(const char *data);
 
 typedef struct {
     long long id;
@@ -234,6 +236,9 @@ void *handle_connection(void *arg) {
         if (strstr(buffer, "MANAGER_LOGIN|") != NULL) {
             handle_manager_login(buffer, client_fd);
         }
+        if (strstr(buffer, "ADMIN_LOGIN|") != NULL) {
+            handle_admin_login(buffer, client_fd);
+        }
         if (strstr(buffer, "HOTELS|") != NULL) {
 
             const char *region_name = strchr(buffer, '|');
@@ -241,6 +246,9 @@ void *handle_connection(void *arg) {
                 region_name++;
                 retrieve_hotels(client_fd, region_name);
             }
+        }
+        if (strstr(buffer, "ADD_HOTEL|") != NULL) {
+            handle_add_hotel(buffer);
         }
         if (strstr(buffer, "CLIENT_UPDATE|") != NULL)
         {
@@ -367,6 +375,57 @@ void handle_manager_login(const char *data, int client_fd) {
     mysql_close(conn);
 }
 
+void handle_admin_login(const char *data, int client_fd) {
+    char username[100], password[100];
+    if (sscanf(data, "ADMIN_LOGIN|%99[^|]|%99[^|]", username, password) != 2) {
+        printf("LOGIN_DATA: [%s][%s]\n", username, password);
+        fprintf(stderr, "Invalid login data format: %s\n", data);
+        return;
+    }
+
+    // Print the received username and password for debugging
+    printf("Received login request with username: %s, password: %s\n", username, password);
+
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    // Prepare SQL statement
+    char query[1024];
+    snprintf(query, sizeof(query), "SELECT adminID FROM admins WHERE username='%s' AND password='%s'", username, password);
+
+    // Execute SQL statement
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        MYSQL_RES *result = mysql_store_result(conn);
+        int num_rows = mysql_num_rows(result);
+
+        if (num_rows > 0) {
+            MYSQL_ROW row = mysql_fetch_row(result);
+            long long admin_id = atoll(row[0]); // Assuming customerID is stored as a long long
+
+            char response[256];
+            snprintf(response, sizeof(response), "true|%lld", admin_id);
+            send(client_fd, response, strlen(response), 0);
+            printf("[LOGIN_SUCCESS] Sent 'true' response with client ID (%lld) to client\n", admin_id);
+        } else {
+            char response[] = "false";
+            send(client_fd, response, strlen(response), 0);
+            printf("[LOGIN_FAILURE] Sent 'false' response to client\n");
+        }
+
+        mysql_free_result(result);
+    }
+
+    // Clean up
+    mysql_close(conn);
+}
+
 
 
 
@@ -444,6 +503,40 @@ void handle_client_update(const char *data) {
     // Clean up
     mysql_close(conn);
 }
+void handle_add_hotel(const char *data) {
+    char hotel_name[255], address[255], email[255], phone[15], rating[255], region[255], image[1000], facilities[255];
+
+    if (sscanf(data, "ADD_HOTEL|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]",
+               hotel_name, address, email, phone, rating, region, image, facilities) != 8) {
+        fprintf(stderr, "Invalid ADD_HOTEL data format: %s\n", data);
+        return;
+    }
+
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    char query[4096];
+    snprintf(query, sizeof(query),
+             "INSERT INTO hotels (name, address, email, phone, rating, region, picture, facilities) "
+             "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+             hotel_name, address, email, phone, rating, region, image, facilities);
+
+    // Execute SQL statement
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        printf("Hotel data inserted into the database\n");
+    }
+
+    // Clean up
+    mysql_close(conn);
+}
+
 
 void handle_manager_registration(const char *data) {
     long long manager_id;
