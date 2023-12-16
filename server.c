@@ -33,7 +33,7 @@ typedef struct {
     char picture[1000];
 } Hotel;
 
-void send_hotel_names(int client_fd) {
+/* void send_hotel_names(int client_fd, const char *region_name) {
     MYSQL *conn = connect_to_DB();
 
     if (conn == NULL) {
@@ -41,8 +41,10 @@ void send_hotel_names(int client_fd) {
         return;
     }
 
-    const char *query = "SELECT hotelID, name FROM hotels";
-    
+    // Concatenate the region name into the query
+    char query[256];  // Adjust the size based on your needs
+    snprintf(query, sizeof(query), "SELECT hotelID, name FROM hotels WHERE region='%s'", region_name);
+
     if (mysql_query(conn, query) != 0) {
         fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
     } else {
@@ -69,10 +71,11 @@ void send_hotel_names(int client_fd) {
     }
 
     mysql_close(conn);
-}
+} */
 
 
-void retrieve_hotels(int client_fd) {
+
+void retrieve_hotels(int client_fd,const char *region_name) {
     // Connect to MySQL
     MYSQL *conn = connect_to_DB();
 
@@ -81,7 +84,8 @@ void retrieve_hotels(int client_fd) {
         return;
     }
 
-    const char *query = "SELECT * FROM hotels";
+    char query[256];  // Adjust the size based on your needs
+    snprintf(query, sizeof(query), "SELECT * FROM hotels WHERE region='%s'", region_name);
 
     if (mysql_query(conn, query) != 0) {
         fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
@@ -230,13 +234,13 @@ void *handle_connection(void *arg) {
         if (strstr(buffer, "MANAGER_LOGIN|") != NULL) {
             handle_manager_login(buffer, client_fd);
         }
-        if (strstr(buffer, "HOTELS") != NULL)
-        {
-            retrieve_hotels(client_fd);
-        }
-        if (strstr(buffer, "NAMES| ") != NULL)
-        {
-            send_hotel_names(client_fd);
+        if (strstr(buffer, "HOTELS|") != NULL) {
+
+            const char *region_name = strchr(buffer, '|');
+            if (region_name != NULL) {
+                region_name++;
+                retrieve_hotels(client_fd, region_name);
+            }
         }
         if (strstr(buffer, "CLIENT_UPDATE|") != NULL)
         {
@@ -333,7 +337,7 @@ void handle_manager_login(const char *data, int client_fd) {
 
     // Prepare SQL statement
     char query[1024];
-    snprintf(query, sizeof(query), "SELECT * FROM managers WHERE username='%s' AND password='%s'", username, password);
+    snprintf(query, sizeof(query), "SELECT managerID FROM managers WHERE username='%s' AND password='%s'", username, password);
 
     // Execute SQL statement
     if (mysql_query(conn, query) != 0) {
@@ -343,9 +347,13 @@ void handle_manager_login(const char *data, int client_fd) {
         int num_rows = mysql_num_rows(result);
 
         if (num_rows > 0) {
-            char response[] = "true";
+            MYSQL_ROW row = mysql_fetch_row(result);
+            long long manager_id = atoll(row[0]); // Assuming customerID is stored as a long long
+
+            char response[256];
+            snprintf(response, sizeof(response), "true|%lld", manager_id);
             send(client_fd, response, strlen(response), 0);
-            printf("[LOGIN_SUCCESS] Sent 'true' response to client\n");
+            printf("[LOGIN_SUCCESS] Sent 'true' response with client ID (%lld) to client\n", manager_id);
         } else {
             char response[] = "false";
             send(client_fd, response, strlen(response), 0);

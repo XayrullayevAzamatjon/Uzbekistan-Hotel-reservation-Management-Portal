@@ -108,7 +108,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="tashkent_btn">
+                      <object class="GtkButton" id="m_tashkent">
                         <property name="label" translatable="yes">TASHKENT</property>
                         <property name="name">tashkent_btn</property>
                         <property name="width_request">200</property>
@@ -116,6 +116,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_tashkent_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">50</property>
@@ -123,7 +124,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="namangan_btn">
+                      <object class="GtkButton" id="m_namangan">
                         <property name="label" translatable="yes">NAMANGAN</property>
                         <property name="name">namangan_btn</property>
                         <property name="width_request">200</property>
@@ -131,6 +132,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_namangan_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">265</property>
@@ -138,7 +140,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="fergana_btn">
+                      <object class="GtkButton" id="m_fergana">
                         <property name="label" translatable="yes">FERGANA</property>
                         <property name="name">fergana_btn</property>
                         <property name="width_request">200</property>
@@ -146,6 +148,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_fergana_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">475</property>
@@ -153,7 +156,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="samarkand_btn">
+                      <object class="GtkButton" id="m_samarkand">
                         <property name="label" translatable="yes">SAMARKAND</property>
                         <property name="name">samarkand_btn</property>
                         <property name="width_request">200</property>
@@ -161,6 +164,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_samarkand_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">685</property>
@@ -224,7 +228,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="jizzax_btn">
+                      <object class="GtkButton" id="m_jizzax">
                         <property name="label" translatable="yes">JIZZAKH</property>
                         <property name="name">jizzax_btn</property>
                         <property name="width_request">200</property>
@@ -232,6 +236,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_jizzax_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">50</property>
@@ -239,7 +244,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="surxan_btn">
+                      <object class="GtkButton" id="m_surxan">
                         <property name="label" translatable="yes">SURKHANDARYA</property>
                         <property name="name">surxan_btn</property>
                         <property name="width_request">200</property>
@@ -247,6 +252,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_surxan_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">265</property>
@@ -254,7 +260,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="kashkadarya_btn">
+                      <object class="GtkButton" id="m_kashkadarya">
                         <property name="label" translatable="yes">KASHKADARYA</property>
                         <property name="name">kashkadarya_btn</property>
                         <property name="width_request">200</property>
@@ -262,6 +268,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_kashkadarya_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">475</property>
@@ -269,7 +276,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="khorezm_btn">
+                      <object class="GtkButton" id="m_khorezm">
                         <property name="label" translatable="yes">KHOREZM</property>
                         <property name="name">khorezm_btn</property>
                         <property name="width_request">200</property>
@@ -277,6 +284,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_khorezm_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">685</property>
@@ -312,7 +320,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="buxara_btn">
+                      <object class="GtkButton" id="m_buxara">
                         <property name="label" translatable="yes">BUKHARA</property>
                         <property name="name">buxara_btn</property>
                         <property name="width_request">200</property>
@@ -320,6 +328,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_buxara_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">175</property>
@@ -327,7 +336,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="karakalpak_btn">
+                      <object class="GtkButton" id="m_karakalpak">
                         <property name="label" translatable="yes">KARAKALPAKISTAN</property>
                         <property name="name">karakalpak_btn</property>
                         <property name="width_request">200</property>
@@ -335,6 +344,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="m_karakalpak_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">600</property>

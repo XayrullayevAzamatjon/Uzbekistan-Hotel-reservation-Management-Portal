@@ -81,14 +81,16 @@ typedef struct {
 
 int sock; // Global variable for the socket
 long long customer_id;
+long long manager_id;
 long long generateUniqueID() ;
 void disconnect_from_server() ;
 HotelList receive_hotels(int sock) ;
-void receive_hotel_names(int sock, GtkComboBoxText *hotel_selector);
+//New_code
+void receive_hotel_names(int sock, GtkComboBoxText *hotel_selector,HotelList *hotel_list);
 void destroy(GtkWidget *widget, gpointer data);
 void on_book_button_clicked(GtkButton *button, gpointer data);
 void setup_hotel_interface(HotelList *hotel_list);
-
+void set_hotels_name_to_hotel_selector(const char *region);
 
 void connect_to_server() {
     struct sockaddr_in serv_addr;
@@ -117,7 +119,7 @@ void connect_to_server() {
 
     printf("Connection to server established\n");
 }
-
+//Connect to server 
 void send_to_server(const char *data) {
     size_t data_len = strlen(data);
 
@@ -144,6 +146,10 @@ int main(int argc, char *argv[]) {
     ManagerRegistration = GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "ManagerRegistration"));
     IncorrectPassword=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "IncorrectPassword"));
     EmptyField=GTK_WINDOW(gtk_builder_get_object(sign_up_builder, "EmptyField"));
+    
+    //New_code
+
+
 
     manager_register_builder=gtk_builder_new_from_file("main_page/manager_register.glade");
     ManagerRegister=GTK_WINDOW(gtk_builder_get_object(manager_register_builder, "ManagerRegister"));
@@ -298,33 +304,19 @@ void welcome_register_clicked_cb() {
     
 }
 
-void receive_hotel_names(int sock, GtkComboBoxText *hotel_selector) {
-    int num_names;
-    recv(sock, &num_names, sizeof(num_names), 0);
+//New_code
+void receive_hotel_names(int sock, GtkComboBoxText *hotel_selector, HotelList *hotel_list) {
 
-    printf("Received %d hotel names from the server:\n", num_names);
+    for (int i = 0; i < hotel_list->num_hotels; i++) {
+        gchar *id_str = g_strdup_printf("%s", hotel_list->hotels[i].name);
 
-    for (int i = 0; i < num_names; ++i) {
-        HotelName hotelName;
-        recv(sock, &hotelName, sizeof(HotelName), 0);
-
-        // Convert hotel ID to string
-        gchar *id_str = g_strdup_printf("%lld", hotelName.id);
-
-        // Add hotel name to the combo box with the ID as the data
-        gtk_combo_box_text_append(hotel_selector, id_str, hotelName.name);
-
-        // Print the received data
-        printf("Hotel %d:\n", i + 1);
-        printf("ID: %lld\n", hotelName.id);
-        printf("Name: %s\n", hotelName.name);
-        printf("\n");
+        // Use the hotel name as both ID and display text
+        gtk_combo_box_text_append(hotel_selector, id_str, hotel_list->hotels[i].name);
+        printf("Added: %s\n", hotel_list->hotels[i].name);
 
         g_free(id_str);
     }
-}
-
-        
+}       
 
 void welcome_login_clicked_cb(){
      gtk_widget_hide (GTK_WIDGET(WelcomePage));
@@ -336,14 +328,7 @@ void manager_button_clicked_cb(){
  	gtk_widget_show (GTK_WIDGET(ManagerWelcome));
 }
 
-void manager_sign_up_clicked_cb(){
-    send_to_server("NAMES| ");
-    hotel_selector = GTK_COMBO_BOX_TEXT (gtk_builder_get_object (sign_up_builder, "hotel_selector"));
-    gtk_combo_box_text_remove_all (hotel_selector);
-    receive_hotel_names(sock,hotel_selector);
-    gtk_widget_hide (GTK_WIDGET(ManagerWelcome));
- 	gtk_widget_show (GTK_WIDGET(ManagerRegister));
-}
+
 
 void manager_region_back_clicked_cb(){
     gtk_widget_hide (GTK_WIDGET(ManagerRegister));
@@ -388,7 +373,7 @@ void manager_register_button_clicked_cb(){
     if (strcmp(password, confirm_password) != 0) {
         gtk_widget_show(GTK_WIDGET(IncorrectPassword));
     } else {
-        long long manager_id=generateUniqueID();
+        manager_id=generateUniqueID();
         char data[1024]; 
         snprintf(data, sizeof(data), "MANAGER_REGISTER|%lld|%s|%s|%s|%s|%s|%s|%s|%s|%s", manager_id,
              firstname, lastname, address, passport_number, email, phone_number, username, password,selected_hotel_name);    
@@ -420,14 +405,26 @@ void manager_login_button_clicked_cb(){
         printf("RESPONSE: [%s]\n", response);
 
         // Check the response and take appropriate action
-        if (strcmp(response, "true") == 0) {
-            printf("Login successful. Display main page.\n");
-            // Add code to display the main page
-            gtk_widget_hide(GTK_WIDGET(ManagerLogin));
-            gtk_widget_show(GTK_WIDGET(MAINPAGE));
+        char *token = strtok(response, "|");
+        if (token != NULL && strcmp(token, "true") == 0) {
+            // Login successful. Extract client ID from the response
+            token = strtok(NULL, "|");
+            if (token != NULL) {
+                manager_id = atoll(token);
+                const gchar *manager_id_str = g_strdup_printf("%lld", manager_id);
+
+                printf("Login successful for client ID: %lld\n", manager_id);
+                gtk_label_set_text(main_page_client_id, manager_id_str);
+
+                gtk_widget_hide(GTK_WIDGET(ManagerLogin));
+                gtk_widget_show(GTK_WIDGET(MAINPAGE));
+            } else {
+                fprintf(stderr, "Invalid response format: %s\n", response);
+            }
         } else {
+
             printf("Login failed. Display error popup.\n");
-            // Add code to display an error popup
+       
         }
     } else if (received_bytes == 0) {
         printf("Connection closed by the server.\n");
@@ -436,6 +433,7 @@ void manager_login_button_clicked_cb(){
         perror("Error receiving data from the server");
         // Add error handling code as needed
     }
+
 }
 
 void register_button_clicked_cb(){
@@ -700,11 +698,7 @@ void update_button_clicked_cb(){
     }
 }
 
-void buxara_btn_clicked_cb(){  
-    send_to_server("HOTELS ");   
-    HotelList all_hotels=receive_hotels(sock);  
-    setup_hotel_interface(&all_hotels);       
-}
+
 
 HotelList receive_hotels(int sock) {
     HotelList hotelList;
@@ -842,3 +836,39 @@ void on_book_button_clicked(GtkButton *button, gpointer data) {
 void destroy(GtkWidget *widget, gpointer data) {
     gtk_main_quit();
 }
+//Updated code here ---> New_code
+void manager_sign_up_clicked_cb(){
+/*     send_to_server("HOTELS|BUKHARA");
+    HotelList hotels=receive_hotels(sock); 
+    gtk_combo_box_text_remove_all (hotel_selector);
+    receive_hotel_names(sock,hotel_selector,&hotels); */
+    gtk_widget_hide (GTK_WIDGET(ManagerWelcome));
+ 	gtk_widget_show (GTK_WIDGET(ManagerRegister));
+}
+void buxara_btn_clicked_cb(){  
+    send_to_server("HOTELS ");   
+    HotelList all_hotels=receive_hotels(sock);  
+    setup_hotel_interface(&all_hotels);       
+}
+
+void m_buxara_clicked_cb(){
+    set_hotels_name_to_hotel_selector("BUKHARA");
+}
+void m_tashkent_clicked_cb(){
+    set_hotels_name_to_hotel_selector("TASHKENT");
+}
+
+void set_hotels_name_to_hotel_selector(const char *region){
+    gtk_widget_hide (GTK_WIDGET(ManagerRegister));
+ 	gtk_widget_show (GTK_WIDGET(ManagerRegistration));
+    char message[1024];
+    snprintf(message, sizeof(message), "HOTELS|%s", region);
+    send_to_server(message);
+    HotelList hotels=receive_hotels(sock); 
+    hotel_selector = GTK_COMBO_BOX_TEXT (gtk_builder_get_object (sign_up_builder, "hotel_selector"));
+    gtk_combo_box_text_remove_all (hotel_selector);
+    receive_hotel_names(sock,hotel_selector,&hotels);
+}
+
+
+
