@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-#define PORT 4465
+#define PORT 4464
 void *handle_connection(void *arg);
 void handle_client_login(const char *data, int client_fd);
 void handle_manager_login(const char *data, int client_fd);
@@ -65,6 +65,16 @@ typedef struct {
     char password[255];
     char hotel_name[255];
 } Manager;
+
+typedef struct {
+    int roomID;
+    int room_number;
+    char room_type[255];
+    char bed_type[255];
+    int max_occupancy;
+    float rate;
+} Room;
+
 
 void retrieve_all_customers(int client_fd) {
     // Connect to MySQL
@@ -261,6 +271,56 @@ void retrieve_all_hotels(int client_fd) {
 
     mysql_close(conn);
 }
+void retrieve_all_available_rooms(int client_fd, int hotelId, const char *fromDate, const char *toDate) {
+    // Connect to MySQL
+    MYSQL *conn = connect_to_DB();
+
+    if (conn == NULL) {
+        fprintf(stderr, "Failed to connect to the database\n");
+        return;
+    }
+
+    char query[512];
+    snprintf(query, sizeof(query),
+             "SELECT r.roomID, r.room_number, r.room_type, r.bed_type, r.max_occupancy, r.rate "
+             "FROM rooms r "
+             "WHERE r.hotelID = %d AND r.roomID NOT IN ( "
+             "    SELECT res.roomID "
+             "    FROM reservations res "
+             "    WHERE res.start_date <= '%s' AND res.end_date >= '%s')",
+             hotelId, toDate, fromDate);
+
+    if (mysql_query(conn, query) != 0) {
+        fprintf(stderr, "Failed to execute query: %s\n", mysql_error(conn));
+    } else {
+        MYSQL_RES *result = mysql_store_result(conn);
+
+        if (result != NULL) {
+            int num_rows = mysql_num_rows(result);
+
+            send(client_fd, &num_rows, sizeof(num_rows), 0);
+
+            MYSQL_ROW row;
+            while ((row = mysql_fetch_row(result)) != NULL) {
+                Room room;
+                room.roomID = atoi(row[0]);
+                room.room_number = atoi(row[1]);
+                snprintf(room.room_type, sizeof(room.room_type), "%s", row[2]);
+                snprintf(room.bed_type, sizeof(room.bed_type), "%s", row[3]);
+                room.max_occupancy = atoi(row[4]);
+                room.rate = strtof(row[5], NULL);
+
+                send(client_fd, &room, sizeof(Room), 0);
+            }
+
+            mysql_free_result(result);
+        }
+    }
+
+    mysql_close(conn);
+}
+
+
 
 void retrieve_hotels(int client_fd, const char *region_name) {
     // Connect to MySQL
@@ -529,30 +589,6 @@ void send_admin_info_to_server(long long admin_id, int client_fd) {
     mysql_close(conn);
 }
 void handle_manager_confirmation(const char *data) {
-/*     char from_text[255], to_text[255], room_type_str[255], bed_type_str[255];
-    unsigned int adult_value, child_value, baby_value;
-    float total_price;
-    long long client_id;
-
-    if (sscanf(data, "FOR_MANAGER_CONFIRMATION|%12[^|]|%12[^|]|%u|%u|%u|%f|%19[^|]|%19[^|]|%lld",
-                from_text, to_text, &adult_value, &child_value, &baby_value, &total_price,
-                room_type_str, bed_type_str, &client_id) != 9) {
-        fprintf(stderr, "Invalid FOR_MANAGER_CONFIRMATION data format: %s\n", data);
-        return;
-    }
-
-    // Perform actions based on the received data
-    // For example, you can print the received information
-    printf("Received confirmation from client:\n");
-    printf("From: %s\n", from_text);
-    printf("To: %s\n", to_text);
-    printf("Adults: %u, Children: %u, Babies: %u\n", adult_value, child_value, baby_value);
-    printf("Total Price: %.2f\n", total_price);
-    printf("Room Type: %s\n", room_type_str);
-    printf("Bed Type: %s\n", bed_type_str);
-    printf("--------------------------------------\n");
-
-    // Send the information to the manager client */
     if (manager_fd != 0) {
         send(manager_fd, data, strlen(data), 0);
         printf("Sent confirmation to manager client\n");
@@ -635,6 +671,18 @@ void *handle_connection(void *arg) {
         if (strstr(buffer, "CLIENT_UPDATE|") != NULL)
         {
             handle_client_update(buffer);
+        }
+        if (strstr(buffer, "CHECK_ROOM|") != NULL)
+        {
+            int hotelID;
+            char from_text[255], to_text[255];
+            if (sscanf(buffer, "CHECK_ROOM|%d|%254[^|]|%254[^|]", &hotelID, from_text, to_text) == 3) {
+                printf("Received CHECK_ROOM command for Hotel ID %d, Check-in: %s, Check-out: %s\n", hotelID, from_text, to_text);
+                retrieve_all_available_rooms(client_fd,hotelID,from_text,to_text);
+            } 
+            else {
+                fprintf(stderr, "Invalid CHECK_ROOM command format: %s\n", buffer);
+            }
         }
         if (strstr(buffer, "MANAGER_UPDATE|") != NULL)
         {

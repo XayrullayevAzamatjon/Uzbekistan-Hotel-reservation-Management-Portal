@@ -13,7 +13,7 @@
 // #define SERVER_ADDRESS "172.18.0.29"
 //#define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_ADDRESS "172.18.0.29"
-#define SERVER_PORT 4465
+#define SERVER_PORT 4464
 
 GtkBuilder *builder;
 GtkWindow *SelectRole;
@@ -139,17 +139,34 @@ typedef struct {
 } ManagerList;
 
 
+typedef struct {
+    int roomID;
+    int room_number;
+    char room_type[255];
+    char bed_type[255];
+    int max_occupancy;
+    float rate;
+} Room;
+typedef struct {
+    int num_rooms;  // Number of available rooms
+    Room *rooms;    // Array of available rooms
+} RoomList;
+
+
 int sock; // Global variable for the socket
 long long customer_id;
 long long manager_id;
 long long admin_id;
-const gchar *booked_hotel_name;
+char ch_from_text[255], ch_to_text[255];
+char booked_hotel_name[255];
+char ch_hotel_name[255];
 void display_hotels(GtkWidget *widget, HotelList *hotel_list);
 void display_users(GtkWidget *widget, UserList *user_list);
 void display_managers(GtkWidget *widget, ManagerList *manager_list);
 long long generateUniqueID() ;
 void disconnect_from_server() ;
 HotelList receive_hotels(int sock) ;
+RoomList receive_available_rooms(int sock);
 UserList receive_customers(int sock);
 ManagerList receive_managers(int sock);
 //New_code
@@ -585,21 +602,25 @@ void refresh_clicked_cb() {
         printf("[SERVER] %s\n", buffer);
 
         // Process the received data only if it matches the expected format
-        char from_text[255], to_text[255], room_type_str[255], bed_type_str[255];
+        char from_text[255], to_text[255], room_type_str[255], bed_type_str[255], hotel_name[255];
         unsigned int adult_value, child_value, baby_value;
         float total_price;
-        long long client_id;
+        long long customer_id;
 
-        if (sscanf(buffer, "FOR_MANAGER_CONFIRMATION|%10[^|]|%10[^|]|%u|%u|%u|%f|%19[^|]|%19[^|]|%lld|",
-                from_text, to_text, &adult_value, &child_value, &baby_value, &total_price,
-                room_type_str, bed_type_str, &client_id) == 9) {
+        if (sscanf(buffer, "FOR_MANAGER_CONFIRMATION|%254[^|]|%254[^|]|%u|%u|%u|%f|%254[^|]|%254[^|]|%254[^|]|%lld",
+               from_text, to_text, &adult_value, &child_value, &baby_value, &total_price,
+               room_type_str, bed_type_str, hotel_name, &customer_id) == 10) {
 
             // Convert numeric values to strings
-            const gchar *str_customer_id = g_strdup_printf("%lld", client_id);
+            const gchar *str_customer_id = g_strdup_printf("%lld", customer_id);
             const gchar *str_adult_value = g_strdup_printf("%u", adult_value);
             const gchar *str_child_value = g_strdup_printf("%u", child_value);
             const gchar *str_baby_value = g_strdup_printf("%u", baby_value);
             const gchar *str_total_price = g_strdup_printf("%.2f", total_price);
+            strcpy(ch_hotel_name, hotel_name);
+            strcpy(ch_from_text, from_text);
+            strcpy(ch_to_text, to_text);
+            
 
             // Update the labels
             GtkLabel *label_customer_id  = GTK_LABEL(gtk_builder_get_object(manager_mainPage_builder, "customer_id"));
@@ -616,7 +637,7 @@ void refresh_clicked_cb() {
 
             const gchar *manager_id_str = g_strdup_printf("%lld", manager_id);
             gtk_label_set_text(label_manager, manager_id_str);            
-            gtk_label_set_text(label_hotel_name, booked_hotel_name);
+            gtk_label_set_text(label_hotel_name, hotel_name);
             gtk_label_set_text(label_customer_id, str_customer_id);
             gtk_label_set_text(label_num_adults,  str_adult_value);
             gtk_label_set_text(label_num_childs,  str_child_value);
@@ -631,6 +652,24 @@ void refresh_clicked_cb() {
             fprintf(stderr, "Invalid FOR_MANAGER_CONFIRMATION data format: %s\n", buffer);
         }
     }    
+}
+void check_available_rooms_clicked_cb(){
+    char data[1024];
+    snprintf(data, sizeof(data), "HOTEL_NAME|%s",ch_hotel_name);
+    send_to_server(data);
+    printf("FROM [%s] -> TO[%s]\n",ch_from_text,ch_to_text);
+
+    HotelList hotels = receive_hotels(sock);
+    if (hotels.num_hotels == 1) {
+        char check_room[1024];
+        snprintf(check_room, sizeof(check_room), "CHECK_ROOM|%d|%s|%s",hotels.hotels[0].hotelID,ch_from_text,ch_to_text);
+        printf("CHECKING HOTEL ID  %d\n", hotels.hotels[0].hotelID);
+        send_to_server(check_room);
+        receive_available_rooms(sock);
+    } else {
+        g_print("Hotel not found.\n");
+    }
+
 }
 
 
@@ -1214,6 +1253,34 @@ void admin_update_button_clicked_cb(){
         gtk_widget_show(GTK_WIDGET(AdminInfo));
     }
 }
+RoomList receive_available_rooms(int sock) {
+    RoomList roomList;
+
+    // Receive the number of available rooms
+    recv(sock, &roomList.num_rooms, sizeof(roomList.num_rooms), 0);
+
+    // Allocate memory for the rooms array
+    roomList.rooms = (Room *)malloc(roomList.num_rooms * sizeof(Room));
+
+    printf("Received %d available rooms from the server:\n", roomList.num_rooms);
+
+    for (int i = 0; i < roomList.num_rooms; ++i) {
+        // Receive each room and store it in the array
+        recv(sock, &roomList.rooms[i], sizeof(Room), 0);
+
+        // Process the received room data as needed
+        printf("Room ID: %d\n", roomList.rooms[i].roomID);
+        printf("Room Number: %d\n", roomList.rooms[i].room_number);
+        printf("Room Type: %s\n", roomList.rooms[i].room_type);
+        printf("Bed Type: %s\n", roomList.rooms[i].bed_type);
+        printf("Max Occupancy: %d\n", roomList.rooms[i].max_occupancy);
+        printf("Rate: %.2f\n", roomList.rooms[i].rate);
+        printf("\n");
+    }
+
+    return roomList;
+}
+
 
 
 HotelList receive_hotels(int sock) {
@@ -1394,7 +1461,8 @@ void on_book_button_clicked(GtkButton *button, gpointer data) {
     GtkImage *image1 = GTK_IMAGE(gtk_builder_get_object(more_info_builder, "hotel_image1"));
     GtkImage *image2 = GTK_IMAGE(gtk_builder_get_object(more_info_builder, "hotel_image2"));
     GtkImage *image3 = GTK_IMAGE(gtk_builder_get_object(more_info_builder, "hotel_image3"));
-    booked_hotel_name=hotel->name;
+    strcpy(booked_hotel_name, hotel->name);
+    // booked_hotel_name=hotel->name;
 
     gtk_image_set_from_file(image1, hotel->picture);
     gtk_image_set_from_file(image2, hotel->picture);
@@ -1416,7 +1484,7 @@ void destroy(GtkWidget *widget, gpointer data) {
 }
 // //Booking page
 void more_info_book_clicked_cb(GtkButton *button, gpointer user_data) {  
-    printf("Hotel name is [%s]",booked_hotel_name);
+    g_print("Hotel name is [%s]",booked_hotel_name);
     gtk_widget_hide(GTK_WIDGET(MoreInfo));
     gtk_widget_show(GTK_WIDGET(BookingPage));
     GtkLabel *hotel_name_label = GTK_LABEL(gtk_builder_get_object(booking_builder, "hotel_name"));
@@ -1449,6 +1517,7 @@ void more_info_book_clicked_cb(GtkButton *button, gpointer user_data) {
     return total_price;
 }
 void apply_button_clicked_cb(){
+    g_print("Hotel name is [%s]",booked_hotel_name);
     char room_type_str[180] = ""; 
     char bed_type_str[180] = "";
 // Retrieve the widgets
@@ -1513,12 +1582,10 @@ void apply_button_clicked_cb(){
 
     char data_to_send[1024];  // Adjust the size as needed
     snprintf(data_to_send, sizeof(data_to_send),
-             "FOR_MANAGER_CONFIRMATION|%s|%s|%u|%u|%u|%.2f|%s|%s|%lld",
+             "FOR_MANAGER_CONFIRMATION|%s|%s|%u|%u|%u|%.2f|%s|%s|%s|%lld",
              from_text, to_text, adult_value, child_value, baby_value, total_price,
-             room_type_str, bed_type_str,customer_id);
+             room_type_str, bed_type_str, booked_hotel_name, customer_id);
     send_to_server(data_to_send);
-    // gtk_widget_hide (GTK_WIDGET(BookingPage));
- 	// gtk_widget_show (GTK_WIDGET(Payment));
 }
 
 void pay_button_clicked_cb(){
