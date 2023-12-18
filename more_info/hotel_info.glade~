@@ -415,13 +415,14 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="more_info_book">
                         <property name="label" translatable="yes">BOOK</property>
                         <property name="width_request">150</property>
                         <property name="height_request">70</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="more_info_book_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">350</property>
@@ -436,11 +437,12 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">label</property>
                         <attributes>
-                          <attribute name="font-desc" value="Sans Italic 15"/>
+                          <attribute name="font-desc" value="Sans Italic 18"/>
+                          <attribute name="foreground" value="#0b170a6d0a6d"/>
                         </attributes>
                       </object>
                       <packing>
-                        <property name="x">312</property>
+                        <property name="x">175</property>
                         <property name="y">970</property>
                       </packing>
                     </child>

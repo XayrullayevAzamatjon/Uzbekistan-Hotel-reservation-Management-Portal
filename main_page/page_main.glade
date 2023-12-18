@@ -4,7 +4,10 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="MAINPAGE">
     <property name="name">main</property>
+    <property name="width_request">1850</property>
+    <property name="height_request">900</property>
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
     <property name="default_width">1300</property>
     <property name="default_height">800</property>
     <child type="titlebar">
@@ -117,13 +120,14 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="registan">
                         <property name="label" translatable="yes">REGISTAN</property>
                         <property name="width_request">250</property>
                         <property name="height_request">40</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="registan_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">50</property>
@@ -131,13 +135,14 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="zamin">
                         <property name="label" translatable="yes">ZAMIN RESORT</property>
                         <property name="width_request">250</property>
                         <property name="height_request">40</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="zamin_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">350</property>
@@ -145,13 +150,14 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="historical_ark">
                         <property name="label" translatable="yes"> HISTORICAL ARK</property>
                         <property name="width_request">250</property>
                         <property name="height_request">40</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="historical_ark_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">650</property>

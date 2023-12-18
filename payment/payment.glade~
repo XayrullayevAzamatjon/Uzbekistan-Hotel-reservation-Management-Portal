@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkWindow" id="Payment">
+    <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="default_width">1300</property>
+    <property name="default_height">800</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_right">7</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">PAYMENT</property>
+            <attributes>
+              <attribute name="font-desc" value="Abyssinica SIL Bold 36"/>
+              <attribute name="foreground" value="#1a1a5f5fb4b4"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">500</property>
+            <property name="y">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry">
+            <property name="width_request">450</property>
+            <property name="height_request">78</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="can_default">True</property>
+            <property name="placeholder_text" translatable="yes">CARD NUMBER:</property>
+            <property name="input_purpose">number</property>
+          </object>
+          <packing>
+            <property name="x">740</property>
+            <property name="y">150</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry">
+            <property name="width_request">450</property>
+            <property name="height_request">78</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">EXPIRATION DATE</property>
+            <property name="input_purpose">number</property>
+          </object>
+          <packing>
+            <property name="x">740</property>
+            <property name="y">280</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry">
+            <property name="width_request">450</property>
+            <property name="height_request">78</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">CVV</property>
+            <property name="input_purpose">number</property>
+          </object>
+          <packing>
+            <property name="x">740</property>
+            <property name="y">410</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="pay_button">
+            <property name="label" translatable="yes">Pay</property>
+            <property name="width_request">200</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="pay_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">890</property>
+            <property name="y">550</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">pngtree-home-office-portrait-operation-notebook-image_762332.jpg</property>
+          </object>
+          <packing>
+            <property name="x">100</property>
+            <property name="y">122</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkEntryCompletion" id="entrycompletion1"/>
+</interface>

@@ -117,13 +117,14 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="registan">
                         <property name="label" translatable="yes">REGISTAN</property>
                         <property name="width_request">250</property>
                         <property name="height_request">40</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="registan_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">50</property>
@@ -131,13 +132,14 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="zamin">
                         <property name="label" translatable="yes">ZAMIN RESORT</property>
                         <property name="width_request">250</property>
                         <property name="height_request">40</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="zamin_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">350</property>
@@ -145,13 +147,14 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="historical_ark">
                         <property name="label" translatable="yes"> HISTORICAL ARK</property>
                         <property name="width_request">250</property>
                         <property name="height_request">40</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="historical_ark_clicked_cb" swapped="no"/>
                       </object>
                       <packing>
                         <property name="x">650</property>
@@ -526,7 +529,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Client ID</property>
                         <attributes>
-                          <attribute name="font-desc" value="Sans Bold Italic 20"/>
+                          <attribute name="font-desc" value="Sans Bold Italic 14"/>
                         </attributes>
                       </object>
                       <packing>
@@ -542,7 +545,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Client ID</property>
                         <attributes>
-                          <attribute name="font-desc" value="Sans Bold Italic 20"/>
+                          <attribute name="font-desc" value="Sans Bold Italic 15"/>
                         </attributes>
                       </object>
                       <packing>

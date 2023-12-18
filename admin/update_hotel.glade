@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkWindow">
+  <object class="GtkWindow" id="UpdateHotel">
     <property name="can_focus">False</property>
     <child type="titlebar">
       <placeholder/>
@@ -29,7 +29,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="name">
             <property name="width_request">620</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
@@ -42,7 +42,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="address">
             <property name="width_request">620</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
@@ -55,7 +55,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="email">
             <property name="width_request">620</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
@@ -68,7 +68,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="phone">
             <property name="width_request">620</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
@@ -81,12 +81,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="facilities">
             <property name="width_request">620</property>
             <property name="height_request">66</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="placeholder_text" translatable="yes">Rating</property>
+            <property name="placeholder_text" translatable="yes">Facilities</property>
           </object>
           <packing>
             <property name="x">87</property>
@@ -94,7 +94,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText">
+          <object class="GtkComboBoxText" id="hotels">
             <property name="width_request">450</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
@@ -106,13 +106,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="update_select">
             <property name="label" translatable="yes">Select</property>
             <property name="width_request">150</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="update_select_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">556</property>
@@ -120,13 +121,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="cancel_hotel_upate_button">
             <property name="label" translatable="yes">Cancel</property>
             <property name="width_request">150</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="cancel_hotel_upate_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">181</property>
@@ -134,13 +136,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="update_hotel_button">
             <property name="label" translatable="yes">Update</property>
             <property name="width_request">150</property>
             <property name="height_request">65</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="update_hotel_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">430</property>
@@ -148,13 +151,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="update_hotel_back_button">
             <property name="label">gtk-go-back</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="use_stock">True</property>
             <property name="always_show_image">True</property>
+            <signal name="clicked" handler="update_hotel_back_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">20</property>

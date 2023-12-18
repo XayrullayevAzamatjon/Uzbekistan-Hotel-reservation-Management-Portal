@@ -1,193 +1,581 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
-  <object class="GtkWindow" id="CustomerUpdate">
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkWindow" id="AdminUpdate">
     <property name="can_focus">False</property>
-    <property name="default_width">1300</property>
-    <property name="default_height">800</property>
-    <property name="focus_on_map">False</property>
+    <property name="title" translatable="yes">Admin Profile Update</property>
+    <property name="resizable">False</property>
     <child type="titlebar">
       <placeholder/>
     </child>
     <child>
-      <object class="GtkAspectFrame">
+      <object class="GtkFixed">
+        <property name="width_request">1850</property>
+        <property name="height_request">870</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkEntry" id="admin_first_name2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">First name</property>
+          </object>
+          <packing>
+            <property name="x">165</property>
+            <property name="y">86</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="admin_last_name2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Last name</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">162</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="admin_phone_number2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Phone num</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">469</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="admin_username2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Username</property>
+          </object>
+          <packing>
+            <property name="x">166</property>
+            <property name="y">547</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="admin_email2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Email</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">394</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">300</property>
+            <property name="height_request">70</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">UPDATE</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold Italic 31"/>
+              <attribute name="style" value="italic"/>
+              <attribute name="foreground" value="#a4a400000000"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">241</property>
+            <property name="y">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="admin_update_button">
+            <property name="label" translatable="yes">Update</property>
+            <property name="width_request">200</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="admin_update_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">187</property>
+            <property name="y">767</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="admin_password2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="invisible_char">•</property>
+            <property name="placeholder_text" translatable="yes">Password</property>
+          </object>
+          <packing>
+            <property name="x">165</property>
+            <property name="y">621</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="admin_confirm_password2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="invisible_char">•</property>
+            <property name="placeholder_text" translatable="yes">Confirm Password</property>
+          </object>
+          <packing>
+            <property name="x">168</property>
+            <property name="y">700</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="admin_cancel_button">
+            <property name="label" translatable="yes">Cancel</property>
+            <property name="width_request">200</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="admin_cancel_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">430</property>
+            <property name="y">765</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="admin_update_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="admin_update_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="CustomerUpdate">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Customer Profile Update</property>
+    <property name="resizable">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="width_request">1850</property>
+        <property name="height_request">870</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">center</property>
         <property name="valign">center</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
         <child>
-          <object class="GtkFixed">
+          <object class="GtkEntry" id="first_name2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">First name</property>
+          </object>
+          <packing>
+            <property name="x">165</property>
+            <property name="y">86</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="last_name2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Last name</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">162</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="phone_number2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Phone num</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">469</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="passport_number2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Passport No</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">314</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="username2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Username</property>
+          </object>
+          <packing>
+            <property name="x">166</property>
+            <property name="y">547</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="address2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Address</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">237</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="email2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Email</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">394</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">300</property>
+            <property name="height_request">70</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <child>
-              <object class="GtkEntry" id="first_name2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">First name</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">200</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="last_name2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Last name</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">270</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="phone_number2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Phone num</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">560</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="passport_number2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Passport No</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">420</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="username2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Username</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">630</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="address2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Address</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">350</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="email2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Email</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">490</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="width_request">300</property>
-                <property name="height_request">70</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">UPDATE</property>
-                <attributes>
-                  <attribute name="font-desc" value="Sans Bold Italic 31"/>
-                  <attribute name="style" value="italic"/>
-                  <attribute name="foreground" value="#a4a400000000"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="x">490</property>
-                <property name="y">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="update_button">
-                <property name="label" translatable="yes">Update</property>
-                <property name="width_request">200</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="update_button_clicked_cb" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">290</property>
-                <property name="y">848</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">update.jpg</property>
-              </object>
-              <packing>
-                <property name="x">800</property>
-                <property name="y">100</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="password2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Password</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">700</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="confirm_password2">
-                <property name="width_request">450</property>
-                <property name="height_request">50</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="placeholder_text" translatable="yes">Confirm Password</property>
-              </object>
-              <packing>
-                <property name="x">167</property>
-                <property name="y">770</property>
-              </packing>
-            </child>
+            <property name="label" translatable="yes">UPDATE</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold Italic 31"/>
+              <attribute name="style" value="italic"/>
+              <attribute name="foreground" value="#a4a400000000"/>
+            </attributes>
           </object>
+          <packing>
+            <property name="x">241</property>
+            <property name="y">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="update_button">
+            <property name="label" translatable="yes">Update</property>
+            <property name="width_request">200</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="update_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">187</property>
+            <property name="y">767</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="password2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="invisible_char">•</property>
+            <property name="placeholder_text" translatable="yes">Password</property>
+          </object>
+          <packing>
+            <property name="x">165</property>
+            <property name="y">621</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="confirm_password2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="invisible_char">•</property>
+            <property name="placeholder_text" translatable="yes">Confirm Password</property>
+          </object>
+          <packing>
+            <property name="x">168</property>
+            <property name="y">700</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="cancel_button">
+            <property name="label" translatable="yes">Cancel</property>
+            <property name="width_request">200</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="cancel_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">430</property>
+            <property name="y">765</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="update_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="update_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="ManagerUpdate">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Manager Profile Update</property>
+    <property name="resizable">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="width_request">1850</property>
+        <property name="height_request">870</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkEntry" id="manager_first_name2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">First name</property>
+          </object>
+          <packing>
+            <property name="x">165</property>
+            <property name="y">86</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_last_name2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Last name</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">162</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_phone_number2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Phone num</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">469</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_passport_number2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Passport No</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">314</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_username2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Username</property>
+          </object>
+          <packing>
+            <property name="x">166</property>
+            <property name="y">547</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_address2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Address</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">237</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_email2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="placeholder_text" translatable="yes">Email</property>
+          </object>
+          <packing>
+            <property name="x">167</property>
+            <property name="y">394</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">300</property>
+            <property name="height_request">70</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">UPDATE</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold Italic 31"/>
+              <attribute name="style" value="italic"/>
+              <attribute name="foreground" value="#a4a400000000"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">241</property>
+            <property name="y">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_update_button">
+            <property name="label" translatable="yes">Update</property>
+            <property name="width_request">200</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="manager_update_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">187</property>
+            <property name="y">767</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_password2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="invisible_char">•</property>
+            <property name="placeholder_text" translatable="yes">Password</property>
+          </object>
+          <packing>
+            <property name="x">165</property>
+            <property name="y">621</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="manager_confirm_password2">
+            <property name="width_request">500</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="invisible_char">•</property>
+            <property name="placeholder_text" translatable="yes">Confirm Password</property>
+          </object>
+          <packing>
+            <property name="x">168</property>
+            <property name="y">700</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_cancel_button">
+            <property name="label" translatable="yes">Cancel</property>
+            <property name="width_request">200</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="manager_cancel_button_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">430</property>
+            <property name="y">765</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manager_update_back">
+            <property name="label">gtk-go-back</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="manager_update_back_clicked_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">20</property>
+          </packing>
         </child>
       </object>
     </child>

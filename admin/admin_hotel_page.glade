@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="AdminHotel">
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
     <property name="default_width">1300</property>
     <property name="default_height">800</property>
     <child type="titlebar">
@@ -11,6 +12,8 @@
     </child>
     <child>
       <object class="GtkFixed">
+        <property name="width_request">1850</property>
+        <property name="height_request">900</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">center</property>
@@ -23,7 +26,7 @@
             <property name="pixbuf">plus.jpg</property>
           </object>
           <packing>
-            <property name="x">110</property>
+            <property name="x">210</property>
             <property name="y">350</property>
           </packing>
         </child>
@@ -36,7 +39,7 @@
             <property name="pixbuf">settings.jpg</property>
           </object>
           <packing>
-            <property name="x">610</property>
+            <property name="x">710</property>
             <property name="y">350</property>
           </packing>
         </child>
@@ -49,7 +52,7 @@
             <property name="pixbuf">signEye.jpg</property>
           </object>
           <packing>
-            <property name="x">1110</property>
+            <property name="x">1210</property>
             <property name="y">350</property>
           </packing>
         </child>
@@ -64,7 +67,7 @@
             <signal name="clicked" handler="admin_add_hotel_clicked_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="x">110</property>
+            <property name="x">210</property>
             <property name="y">565</property>
           </packing>
         </child>
@@ -79,7 +82,7 @@
             <signal name="clicked" handler="admin_update_hotel_clicked_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="x">610</property>
+            <property name="x">710</property>
             <property name="y">565</property>
           </packing>
         </child>
@@ -94,7 +97,7 @@
             <signal name="clicked" handler="admin_view_hotel_clicked_cb" swapped="no"/>
           </object>
           <packing>
-            <property name="x">1110</property>
+            <property name="x">1210</property>
             <property name="y">565</property>
           </packing>
         </child>

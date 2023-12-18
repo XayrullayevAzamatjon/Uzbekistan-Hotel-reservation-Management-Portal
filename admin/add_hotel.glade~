@@ -178,6 +178,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="cancel_hotel_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">211</property>
@@ -192,6 +193,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="add_hotel_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">432</property>
@@ -199,13 +201,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="add_hotel_back_button">
             <property name="label">gtk-go-back</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="use_stock">True</property>
             <property name="always_show_image">True</property>
+            <signal name="clicked" handler="add_hotel_back_button_clicked_cb" swapped="no"/>
           </object>
           <packing>
             <property name="x">20</property>
